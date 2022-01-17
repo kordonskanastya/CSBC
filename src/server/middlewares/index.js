@@ -19,8 +19,10 @@ const authenticateToken = (req, res, next) => {
 
   // eslint-disable-next-line consistent-return
   jwt.verify(token, secretKey, (err, user) => {
-      console.log(err);
-      if (err) return res.sendStatus(403);
+      if (err) {
+        console.log(err.message || err);
+        return res.sendStatus(403);
+      }
       req.user = user;
       next();
   });
