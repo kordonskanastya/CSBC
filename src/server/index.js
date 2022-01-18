@@ -1,7 +1,5 @@
-const config = require('../config');
+const { port } = require('../config');
 const app = require('./routes');
-
-const { port } = config;
 
 let listener;
 
