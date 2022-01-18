@@ -26,6 +26,11 @@ async function boot () {
     //   server.stop(() => process.exit());
     // }
     await db.testConnection();
+    await db.createUser({ userId: 123, userName: 'fg', userSurname: 'gsdg',
+      userPatronymic: 'dth', userEmail: 'sth', userPasswordHash: 'dtrhr',
+      fkUserRoleId: 4563 });
+
+    console.log(await db.getAllUsers());
     server.start();
   } catch(err) {
     console.error(err.message || err);

@@ -4,9 +4,9 @@ module.exports = (config) => {
   const client = new Pool(config);
 
   return {
-    getAllData: async () => {
+    getAllUsers: async () => {
       try {
-        const data = await(client.query('SELECT * FROM products'));
+        const data = await(client.query('SELECT * FROM users'));
         return data.rows;
       } catch(err) {
         console.error(err.message || err);
@@ -29,24 +29,39 @@ module.exports = (config) => {
       client.end();
     },
 
-    createProduct: async ({ item, type, measure = 'weight',
-      measureValue = 1, priceType = 'pricePerKilo', priceValue = '$0' }) => {
+    getUser: async (id) => {
       try {
-        if(!item) {
-          throw new Error('ERROR: No product item defined');
+        if (!id) {
+          throw new Error('ERROR: No product id defined');
         }
-        if(!type) {
-          throw new Error('ERROR: No product type defined');
+        const res = await client.query(
+          'SELECT * From users WHERE id = $1 AND deleted_at IS NULL',
+          [id],
+        );
+        return res.rows[0];
+      } catch (err) {
+        console.error(err.message || err);
+        throw err;
+      }
+    },
+
+    createUser: async ({ userId, userName, userSurname,
+      userPatronymic, userEmail, userPasswordHash, fkUserRoleId }) => {
+      try {
+        if(!userId) {
+          throw new Error('ERROR: No user id defined');
         }
-        const timestamp = new Date();
+        if(!userId) {
+          throw new Error('ERROR: No user id defined');
+        }
 
         const res = await client.query(
-          `INSERT INTO products(item, type, measure, measureValue, priceType,
-            priceValue, created_at, updated_at, deleted_at)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)
+          `INSERT INTO users(user_name, user_surname,
+            user_patronymic, user_email, user_password_hash)
+            VALUES($1, $2, $3, $4, $5)
             RETURNING *`,
-          [item, type, measure, measureValue, priceType,
-            priceValue, timestamp, timestamp, null]
+          [userName, userSurname,
+            userPatronymic, userEmail, userPasswordHash]
         );
 
         console.log(`DEBUG: New product created:
@@ -58,66 +73,14 @@ module.exports = (config) => {
       }
     },
 
-    getProduct: async (id) => {
-      try {
-        if (!id) {
-          throw new Error('ERROR: No product id defined');
-        }
-        const res = await client.query(
-          'SELECT * From products WHERE id = $1 AND deleted_at IS NULL',
-          [id],
-        );
-        return res.rows[0];
-      } catch (err) {
-        console.error(err.message || err);
-        throw err;
-      }
-    },
-
-    updateProduct: async ({id, ...product}) => {
-      try {
-        if (!id) {
-          throw new Error('ERROR: No product id defined');
-        }
-
-        const query = [];
-        const values = [];
-
-        // eslint-disable-next-line no-restricted-syntax
-        for (const [i, [k, v]] of Object.entries(product).entries()) {
-          query.push(`${k} = $${i + 1}`);
-          values.push(v);
-        }
-
-        if(!values.length) {
-          throw new Error('ERROR: Nothing to update');
-        }
-
-        values.push(id);
-
-        const res = await client.query(
-          `UPDATE products SET ${query.join(',')}
-          WHERE id = $${values.length} RETURNING *`,
-          values
-        );
-
-        console.log(`DEBUG:  Product updated: ${JSON.stringify(res.rows[0])}`);
-        return res.rows[0];
-
-      } catch (err) {
-        console.error(err.message || err);
-        throw err;
-      }
-    },
-
-    deleteProduct: async (id) => {
+    deleteUser: async (id) => {
       try {
         if (!id) {
           throw new Error('ERROR: No product id defined');
         }
         // await client.query('DELETE FROM products WHERE id = $1', [id]);
         await client.query(
-          'UPDATE products SET deleted_at = $1 WHERE id = $2',
+          'UPDATE users SET deleted_at = $1 WHERE id = $2',
           [new Date(), id]
         );
         return true;
