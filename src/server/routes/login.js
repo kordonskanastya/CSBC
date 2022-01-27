@@ -3,7 +3,6 @@ const auth = require('../../utils/auth');
 const service = require('../../services');
 const {generateAccessToken, generateRefreshToken} = require('../../utils');
 
-
 const login = express.Router();
 
 // eslint-disable-next-line consistent-return

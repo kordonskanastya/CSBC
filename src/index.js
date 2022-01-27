@@ -1,5 +1,5 @@
 const server = require('./server');
-const { pg: dbConfig }  = require('./config');
+const { db: dbConfig }  = require('./config');
 
 const db = require('./db')(dbConfig);
 
