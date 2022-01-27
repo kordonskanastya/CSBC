@@ -7,9 +7,11 @@ function exit (field) {
 
 const config = {
   port: process.env.PORT || 3000,
-  secretKey: process.env.TOKEN_SECRET_KEY || exit('secretKey'),
-  username: process.env.USER_NAME || exit('username'),
-  password: process.env.PASSWORD || exit('password'),
+  accessTokenSecret: process.env.ACCESS_TOKEN_SECRET_KEY ||
+    exit('AccessTokenSecretKey'),
+  refreshTokenSecret: process.env.REFRESH_TOKEN_SECRET_KEY ||
+    exit('REFRESHTokenSecretKey'),
+  salt: process.env.SALT || exit('salt'),
   pg: {
     user: process.env.DB_USER || exit('db_user'),
     host: process.env.DB_HOST || exit('db_host'),

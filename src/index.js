@@ -21,16 +21,14 @@ function enableGracefulShutdown() {
 async function boot () {
   enableGracefulShutdown();
   try {
-    // if (!await db.testConnection()) {
-    //   console.log('DB connection failed. Stop server');
-    //   server.stop(() => process.exit());
-    // }
     await db.testConnection();
-    await db.createUser({ userId: 123, userName: 'fg', userSurname: 'gsdg',
-      userPatronymic: 'dth', userEmail: 'sth', userPasswordHash: 'dtrhr',
-      fkUserRoleId: 4563 });
-
-    console.log(await db.getAllUsers());
+    // await db.createUser({
+    //   'username': 'adminAn',
+    //   'surname': 'kordonska',
+    //   'patronymic': 'oleksandrivna',
+    //   'email': 'kordonskanastya@gmail.com',
+    //   'password': '96915cf044e0515d35cfe7500b2079a4cd2531b9a6c07f2532e563a8f6482165'
+    // });
     server.start();
   } catch(err) {
     console.error(err.message || err);

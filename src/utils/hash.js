@@ -1,8 +1,8 @@
-const { createHmac } = await import('crypto');
-const { secretKey } = require('../config');
+const { createHmac } = require('crypto');
+const { salt } = require('../config');
 
 function hashingPassword (password) {
-  return createHmac('sha256', secretKey)
+  return createHmac('sha256', salt)
                .update(password)
                .digest('hex');
 };

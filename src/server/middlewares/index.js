@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { secretKey } = require('../../config');
+const { accessTokenSecret } = require('../../config');
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
@@ -18,7 +18,7 @@ const authenticateToken = (req, res, next) => {
   if (token === null) return res.sendStatus(401);
 
   // eslint-disable-next-line consistent-return
-  jwt.verify(token, secretKey, (err, user) => {
+  jwt.verify(token, accessTokenSecret, (err, user) => {
       if (err) {
         console.log(err.message || err);
         return res.sendStatus(403);

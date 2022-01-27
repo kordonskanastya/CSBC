@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const login = require('./login');
+const admin = require('./admin');
 
-// eslint-disable-next-line no-unused-vars
 const { authenticateToken, errorHandler } = require('../middlewares');
 
 const app = express();
@@ -11,7 +11,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(login);
+
 app.use(authenticateToken);
+
+app.use('/admin', admin);
 
 app.get('/ping', (req, res) => {
   res.send('pong');

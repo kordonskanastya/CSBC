@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+const {Pool} = require('pg');
 
 module.exports = (config) => {
   const client = new Pool(config);
@@ -6,9 +6,9 @@ module.exports = (config) => {
   return {
     getAllUsers: async () => {
       try {
-        const data = await(client.query('SELECT * FROM users'));
+        const data = await (client.query('SELECT * FROM users'));
         return data.rows;
-      } catch(err) {
+      } catch (err) {
         console.error(err.message || err);
         throw err;
       }
@@ -16,9 +16,10 @@ module.exports = (config) => {
 
     testConnection: async () => {
       try {
+        const isConnected = await (client.query('SELECT NOW()'));
         console.log('hello from pg test connection');
-        return await(client.query('SELECT NOW()'));
-      } catch(err) {
+        return isConnected;
+      } catch (err) {
         console.error(err.message || err);
         throw err;
       }
@@ -29,45 +30,39 @@ module.exports = (config) => {
       client.end();
     },
 
-    getUser: async (id) => {
+    getUserByEmail: async (email) => {
       try {
-        if (!id) {
-          throw new Error('ERROR: No product id defined');
+
+        if (!email) {
+          throw new Error('ERROR: No email defined');
         }
+
         const res = await client.query(
-          'SELECT * From users WHERE id = $1 AND deleted_at IS NULL',
-          [id],
+          'SELECT * From users WHERE email like $1 ',
+          [`%${  email  }%`]
         );
-        return res.rows[0];
+
+        return  res.rows;
       } catch (err) {
         console.error(err.message || err);
         throw err;
       }
     },
 
-    createUser: async ({ userId, userName, userSurname,
-      userPatronymic, userEmail, userPasswordHash, fkUserRoleId }) => {
+    createUser: async ({username, surname, patronymic,
+      email, password}) => {
       try {
-        if(!userId) {
-          throw new Error('ERROR: No user id defined');
-        }
-        if(!userId) {
-          throw new Error('ERROR: No user id defined');
-        }
-
+        // TODO validation
         const res = await client.query(
-          `INSERT INTO users(user_name, user_surname,
-            user_patronymic, user_email, user_password_hash)
-            VALUES($1, $2, $3, $4, $5)
-            RETURNING *`,
-          [userName, userSurname,
-            userPatronymic, userEmail, userPasswordHash]
+          `INSERT INTO users(username, surname, patronymic, email, password)
+           VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+          [username, surname,
+            patronymic, email, password]
         );
-
-        console.log(`DEBUG: New product created:
-          ${JSON.stringify(res.rows[0])}`);
+        console.log('New User created');
         return res.rows[0];
-      } catch(err) {
+        // TODO log
+      } catch (err) {
         console.error(err.message || err);
         throw err;
       }
@@ -78,16 +73,63 @@ module.exports = (config) => {
         if (!id) {
           throw new Error('ERROR: No product id defined');
         }
-        // await client.query('DELETE FROM products WHERE id = $1', [id]);
-        await client.query(
-          'UPDATE users SET deleted_at = $1 WHERE id = $2',
-          [new Date(), id]
-        );
-        return true;
+        await client.query('DELETE FROM users WHERE id = $1', [id]);
+        // TODO log
+        return 'User deleted';
       } catch (err) {
         console.error(err.message || err);
         throw err;
       }
     },
+    updateUser: async ({id, ...user}) => {
+      try {
+        if (!id) {
+          throw new Error('ERROR: No product id defined');
+        }
+
+        const query = [];
+        const values = [];
+        // eslint-disable-next-line no-restricted-syntax
+        for (const [i, [k, v]] of Object.entries(user).entries()) {
+          query.push(`${k} = $${i + 1}`);
+          values.push(v);
+        }
+
+        if (!values.length) {
+          throw new Error('ERROR: Nothing to update');
+        }
+
+        const res = await client.query(
+          `UPDATE users
+           SET ${query.join(',')}
+           WHERE id = ${id} RETURNING *`,
+          values
+        );
+
+        console.log(`DEBUG:  User updated: ${JSON.stringify(res.rows[0])}`);
+        return res.rows[0];
+
+      } catch (err) {
+        console.error(err.message || err);
+        throw err;
+      }
+    },
+    addRefreshToken:async ({email,RToken})=>{
+      try {
+        if(!email){
+          console.log('ERROR:No email defined');
+        }if(!RToken){
+          console.log('ERROR:No token defined');
+        }
+        const res=await client.query(
+          'UPDATE users SET refresh_token=$2 where email=$1 returning * ',
+          [email,RToken]
+        );
+        return res.rows;
+      }catch (err){
+        console.log(err);
+        throw err;
+      }
+    }
   };
 };
