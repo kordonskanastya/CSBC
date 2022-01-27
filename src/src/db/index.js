@@ -13,12 +13,36 @@ module.exports = (config) => {
         throw err;
       }
     },
+    getUserByID: async ({id}) => {
+      try {
 
+        if (!id) {
+          throw new Error('ERROR: No user id defined');
+        }
+
+        const validId = await client
+          .query('SELECT id from users where id=$1', [id]);
+        if (validId.rows.length === 0) {
+          throw new Error('ERROR:User not find');
+        }
+
+
+        const res = await client.query(
+          'SELECT * From users WHERE id=$1 ',
+          [id]
+        );
+
+
+        return res.rows[0];
+      } catch (err) {
+        console.error(err.message || err);
+        throw err;
+      }
+    },
     testConnection: async () => {
       try {
-        const isConnected = await (client.query('SELECT NOW()'));
         console.log('hello from pg test connection');
-        return isConnected;
+        return await (client.query('SELECT NOW()'));
       } catch (err) {
         console.error(err.message || err);
         throw err;
@@ -34,7 +58,7 @@ module.exports = (config) => {
       try {
 
         if (!email) {
-          throw new Error('ERROR: No email defined');
+          throw new Error('ERROR: No product id defined');
         }
 
         const res = await client.query(
@@ -42,20 +66,25 @@ module.exports = (config) => {
           [`%${  email  }%`]
         );
 
-        return  res.rows;
+        return res.rows;
       } catch (err) {
         console.error(err.message || err);
         throw err;
       }
     },
 
-    createUser: async ({username, surname, patronymic,
-      email, password}) => {
+    createUser: async ({
+                         username,
+                         surname,
+                         patronymic,
+                         email,
+                         password,
+                       }) => {
       try {
         // TODO validation
         const res = await client.query(
-          `INSERT INTO users(username, surname, patronymic, email, password)
-           VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+          `INSERT INTO users(id, username, surname, patronymic, email, password)
+           VALUES (DEFAULT, $1, $2, $3, $4, $5) RETURNING *`,
           [username, surname,
             patronymic, email, password]
         );
@@ -71,11 +100,17 @@ module.exports = (config) => {
     deleteUser: async (id) => {
       try {
         if (!id) {
-          throw new Error('ERROR: No product id defined');
+          throw new Error('ERROR: No user id defined');
         }
-        await client.query('DELETE FROM users WHERE id = $1', [id]);
-        // TODO log
-        return 'User deleted';
+        const idUser = await client
+          .query('SELECT id from users where id=$1', [id]);
+        if (idUser.rows.length === 0) {
+          throw new Error('ERROR:User not found');
+        } else {
+          await client.query('DELETE FROM users WHERE id = $1', [id]);
+          console.log('DEBUG:User Deleted');
+          return 'User deleted';
+        }
       } catch (err) {
         console.error(err.message || err);
         throw err;
@@ -86,7 +121,6 @@ module.exports = (config) => {
         if (!id) {
           throw new Error('ERROR: No product id defined');
         }
-
         const query = [];
         const values = [];
         // eslint-disable-next-line no-restricted-syntax
@@ -106,6 +140,12 @@ module.exports = (config) => {
           values
         );
 
+
+        if (!res.rows.length) {
+
+          throw new Error('ERROR:User not found');
+        }
+
         console.log(`DEBUG:  User updated: ${JSON.stringify(res.rows[0])}`);
         return res.rows[0];
 
@@ -114,19 +154,22 @@ module.exports = (config) => {
         throw err;
       }
     },
-    addRefreshToken:async ({email,RToken})=>{
+
+    addRefreshToken: async ({email, RToken}) => {
       try {
-        if(!email){
+        if (!email) {
           console.log('ERROR:No email defined');
-        }if(!RToken){
+        }
+        if (!RToken) {
           console.log('ERROR:No token defined');
         }
-        const res=await client.query(
-          'UPDATE users SET refreshtoken=$2 where email=$1 returning * ',
-          [email,RToken]
+        const res = await client.query(
+          // eslint-disable-next-line max-len
+          'UPDATE users SET refreshtoken=$2 where email=$1 returning *', [email, RToken]
         );
+
         return res.rows;
-      }catch (err){
+      } catch (err) {
         console.log(err);
         throw err;
       }
