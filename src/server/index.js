@@ -1,4 +1,4 @@
-const { port } = require('../config');
+const {port} = require('../config');
 const app = require('./routes');
 
 let listener;
@@ -25,4 +25,4 @@ function stop(callback) {
   });
 }
 
-module.exports = { start, stop };
+module.exports = {start, stop};

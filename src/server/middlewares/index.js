@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
-const { accessTokenSecret } = require('../../config');
+const {accessTokenSecret} = require('../../config');
 
 // eslint-disable-next-line no-unused-vars
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   if (!err) {
-    res.status(200).send({ error: false });
+    res.status(200).send({error: false});
   } else {
-    res.status(500).send({ error: err.message });
+    res.status(500).send({error: err.message});
   }
 };
 
@@ -19,12 +19,12 @@ const authenticateToken = (req, res, next) => {
 
   // eslint-disable-next-line consistent-return
   jwt.verify(token, accessTokenSecret, (err, user) => {
-      if (err) {
-        console.log(err.message || err);
-        return res.sendStatus(403);
-      }
-      req.user = user;
-      next();
+    if (err) {
+      console.log(err.message || err);
+      return res.sendStatus(403);
+    }
+    req.user = user;
+    next();
   });
 };
 

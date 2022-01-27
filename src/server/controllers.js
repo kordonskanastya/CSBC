@@ -1,6 +1,7 @@
 const services = require('../services');
 const {badRequest} = require('../statusCode');
 
+
 async function getAllUsers(req, res) {
   try {
     const {message, code} = await services.getAllUsers();
@@ -12,6 +13,7 @@ async function getAllUsers(req, res) {
 
 async function createUser(req, res) {
   try {
+
     const {message, code} = await services.createUser(req.body);
     res.status(code).send(message);
   } catch (err) {
@@ -36,9 +38,20 @@ async function deleteUser(req, res) {
     res.status(badRequest).send({error: err.message});
   }
 }
-async function getUserByEmail(req,res) {
+
+async function getUserByEmail(req, res) {
   try {
     const {message, code} = await services.getUserByEmail(req.query);
+    res.status(code).send(message);
+  } catch (err) {
+    res.status(badRequest).send({error: err.message});
+  }
+}
+
+async function getUserByID(req, res) {
+  try {
+    const {message, code} = await services.getUserByID(req.params);
+
     res.status(code).send(message);
   } catch (err) {
     res.status(badRequest).send({error: err.message});
@@ -50,5 +63,6 @@ module.exports = {
   createUser,
   deleteUser,
   updateUser,
-  getUserByEmail
+  getUserByEmail,
+  getUserByID,
 };

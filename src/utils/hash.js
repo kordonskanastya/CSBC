@@ -1,10 +1,8 @@
-const { createHmac } = require('crypto');
-const { salt } = require('../config');
+const bcrypt = require('bcrypt');
 
-function hashingPassword (password) {
-  return createHmac('sha256', salt)
-               .update(password)
-               .digest('hex');
-};
+
+function hashingPassword(password) {
+  return bcrypt.hashSync(password, 10);
+}
 
 module.exports = hashingPassword;

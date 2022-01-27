@@ -1,7 +1,4 @@
 const server = require('./server');
-const { db: dbConfig }  = require('./config');
-
-const db = require('./db')(dbConfig);
 
 function enableGracefulShutdown() {
   const exitHandler = async (error) => {
@@ -18,21 +15,14 @@ function enableGracefulShutdown() {
   process.on('unhandledRejection', exitHandler);
 }
 
-async function boot () {
+async function boot() {
   enableGracefulShutdown();
   try {
-    await db.testConnection();
-    // await db.createUser({
-    //   'username': 'adminAn',
-    //   'surname': 'kordonska',
-    //   'patronymic': 'oleksandrivna',
-    //   'email': 'kordonskanastya@gmail.com',
-    //   'password': '96915cf044e0515d35cfe7500b2079a4cd2531b9a6c07f2532e563a8f6482165'
-    // });
+
     server.start();
-  } catch(err) {
+  } catch (err) {
     console.error(err.message || err);
   }
-};
+}
 
 boot();
