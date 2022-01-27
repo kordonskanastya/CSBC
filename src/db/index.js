@@ -76,14 +76,10 @@ module.exports = (config) => {
                          surname,
                          patronymic,
                          email,
-                         password,
-                         fkUserRoleId = 1
+                         password
                        }) => {
       try {
-        //TODO validation
-
-
-        const res = await client.query(
+       const res = await client.query(
           `INSERT INTO users(id, username, surname, patronymic, email, password)
            VALUES (DEFAULT, $1, $2, $3, $4, $5) RETURNING *`,
           [username, surname,
@@ -91,7 +87,6 @@ module.exports = (config) => {
         );
         console.log('New User created');
         return res.rows[0];
-        //TODO log
       } catch (err) {
         console.error(err.message || err);
         throw err;
@@ -164,7 +159,7 @@ module.exports = (config) => {
           console.log('ERROR:No token defined');
         }
         const res = await client.query(
-          'UPDATE users SET refreshToken where email=$1 returning * ', [email, RToken]
+          'UPDATE users SET refreshToken=$2 where email=$1 returning * ', [email, RToken]
         );
 
         return res.rows;
