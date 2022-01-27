@@ -18,7 +18,6 @@ function enableGracefulShutdown() {
 async function boot() {
   enableGracefulShutdown();
   try {
-
     server.start();
   } catch (err) {
     console.error(err.message || err);

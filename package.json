@@ -6,7 +6,10 @@
   "scripts": {
     "lint": "eslint --ignore-path .gitignore . --fix",
     "start": "node ./src/index.js",
-    "dev": "nodemon ./src/index.js"
+    "dev": "nodemon ./src/index.js",
+    // "migration-create": "db-migrate create --config=./src/config/database.json --sql-file",
+    "migration-up": "db-migrate up --config=./src/config/database.json",
+    "migration-down": "db-migrate down --config=./src/config/database.json"
   },
   "repository": {
     "type": "git",
