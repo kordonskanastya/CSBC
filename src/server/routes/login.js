@@ -2,11 +2,9 @@ const express = require('express');
 const auth = require('../../utils/auth');
 const service = require('../../services');
 
-const {generateAccessToken, generateRefreshToken} = require('../../utils');
-
+const { generateAccessToken, generateRefreshToken } = require('../../utils');
 
 const login = express.Router();
-
 
 /**
  * @swagger
@@ -67,7 +65,6 @@ const login = express.Router();
  *         email: pupvasya@gmail.com
  *         password: VasyaKrutoy
  */
-
 
 /**
  * @swagger
@@ -143,20 +140,19 @@ const login = express.Router();
  *          description: Some error happened
  */
 
-
 login.post('/login', (req, res, next) => {
   try {
-    const {email} = req.body;
+    const { email } = req.body;
 
-    auth.authUser(req, res).then(data => {
+    auth.authUser(req, res).then((data) => {
       if (data) {
-        const AToken = generateAccessToken(email);//accessToken
-        const RToken = generateRefreshToken(email);//refreshToken
-        service.putRefreshToken({email, RToken}).finally();
+        const AToken = generateAccessToken(email); //accessToken
+        const RToken = generateRefreshToken(email); //refreshToken
+        service.putRefreshToken({ email, RToken }).finally();
         return res.json({
           AccessToken: AToken,
           RefreshToken: RToken,
-          message: 'You are logged-in'
+          message: 'You are logged-in',
         });
       }
     });
@@ -164,6 +160,11 @@ login.post('/login', (req, res, next) => {
     return next(err);
   }
 });
+login.post('/login/forgotten',(req,res)=>{
+ service.changePassword(req,res).then(data=>{
+   return res.json(data.message)
+ })
 
+});
 
 module.exports = login;
