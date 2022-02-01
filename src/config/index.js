@@ -12,6 +12,7 @@ const config = {
   refreshTokenSecret:
     process.env.REFRESH_TOKEN_SECRET_KEY || exit('REFRESHTokenSecretKey'),
   salt: process.env.SALT || exit('salt'),
+  passwordSecret: process.env.PASSWORD_SECRET || exit('passwordSecret'),
   db: {
     user: process.env.DB_USER || exit('db_user'),
     host: process.env.DB_HOST || exit('db_host'),

@@ -39,15 +39,6 @@ async function deleteUser(req, res) {
   }
 }
 
-async function getUserByEmail(req, res) {
-  try {
-    const {message, code} = await services.getUserByEmail(req.query);
-    res.status(code).send(message);
-  } catch (err) {
-    res.status(badRequest).send({error: err.message});
-  }
-}
-
 async function getUserByID(req, res) {
   try {
     const {message, code} = await services.getUserByID(req.params);
@@ -63,6 +54,5 @@ module.exports = {
   createUser,
   deleteUser,
   updateUser,
-  getUserByEmail,
   getUserByID,
 };

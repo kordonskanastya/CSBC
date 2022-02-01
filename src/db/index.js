@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+
 module.exports = (config) => {
   const client = new Pool(config);
 
@@ -58,10 +59,10 @@ module.exports = (config) => {
 
         const res = await client.query(
           'SELECT * From users WHERE email like $1 ',
-          ['%' + email + '%'],
+          [`%${ email }%`],
         );
 
-        return res.rows;
+        return res.rows[0];
       } catch (err) {
         console.error(err.message || err);
         throw err;
@@ -141,35 +142,35 @@ module.exports = (config) => {
       }
     },
 
-    addRefreshToken: async ({ email, RToken }) => {
+    addRefreshToken: async (email, refreshToken) => {
       try {
         if (!email) {
           console.log('ERROR:No email defined');
         }
-        if (!RToken) {
+        if (!refreshToken) {
           console.log('ERROR:No token defined');
         }
         const res = await client.query(
           'UPDATE users SET refreshToken=$2 where email=$1 returning * ',
-          [email, RToken],
+          [email, refreshToken],
         );
-
         return res.rows;
       } catch (err) {
         console.log(err);
         throw err;
       }
     },
+    // eslint-disable-next-line consistent-return
     changePassword: async ({ email, newPassword }) => {
       try {
-        const res=await client.query(
+        const res = await client.query(
           'Update users SET password=$2 where email=$1 returning *',
           [email, newPassword],
         );
-        if(res.rows.length===0){
-          return "User not found"
+        if(res.rows.length === 0){
+          return {result: 'User not found'};
         }
-        return "Password successfully changed"
+        return {result: 'Password successfully changed'};
       } catch (err) {
         console.error(err.message || err);
       }

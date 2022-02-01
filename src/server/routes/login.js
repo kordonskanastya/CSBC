@@ -1,7 +1,8 @@
 const express = require('express');
+const config = require('../../config');
 const auth = require('../../utils/auth');
-const service = require('../../services');
-
+const db = require('../../db')(config.db);
+const services = require('../../services');
 const { generateAccessToken, generateRefreshToken } = require('../../utils');
 
 const login = express.Router();
@@ -144,13 +145,12 @@ const login = express.Router();
 login.post('/login', (req, res, next) => {
   try {
     const { email } = req.body;
-    // eslint-disable-next-line consistent-return
-    auth.authUser(req, res).then((data) => {
-      if (data) {
+    auth.authUser(req, res).then((authFlag) => {
+      if (authFlag) {
         const accessToken = generateAccessToken(email);
         const refreshToken = generateRefreshToken(email);
-        service.putRefreshToken({ email, refreshToken }).finally();
-        return res.json({
+        db.addRefreshToken(email, refreshToken);
+        res.json({
           accessToken,
           refreshToken,
           message: 'You are logged-in',
@@ -163,7 +163,7 @@ login.post('/login', (req, res, next) => {
 });
 
 login.post('/login/forgotten',(req,res)=>{
- service.changePassword(req,res).then(data=>{
+ services.changePassword(req,res).then(data=>{
    res.json(data.message);
  });
 

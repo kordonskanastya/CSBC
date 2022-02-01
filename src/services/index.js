@@ -1,6 +1,8 @@
 const config = require('../config');
 const sendEmail = require('../utils/email');
-const { hashingPassword: hashPassword, generatePassword, } = require('../utils/hash');
+const {
+  hashingPassword,
+  generatePassword, } = require('../utils/hash');
 const db = require('../db')(config.db);
 const statusCode = require('../statusCode');
 
@@ -17,7 +19,7 @@ async function getAllUsers() {
 }
 
 async function createUser(req) {
-  req.password = hashPassword(req.password);
+  req.password = hashingPassword(req.password);
   const newUser = await db.createUser(req);
 
   return successMessage(newUser);
@@ -34,28 +36,16 @@ async function deleteUser(req) {
   return successMessage(deletedUser);
 }
 
-async function getUserByEmail(req) {
-  const user = await db.getUserByEmail(req);
-  return successMessage(user);
-}
-
 async function getUserByID(req) {
   const user = await db.getUserByID(req);
   return successMessage(user);
 }
 
-async function putRefreshToken(req) {
-  const res = await db.addRefreshToken(req);
-  return successMessage(res);
-}
-
 async function changePassword(req) {
-
   const pass = generatePassword();
-
   const user = {
     email: req.body.email,
-    newPassword: hashPassword(pass),
+    newPassword: hashingPassword(pass),
   };
   sendEmail(user.email, pass);
   const message  = await db.changePassword(user);
@@ -67,8 +57,6 @@ module.exports = {
   createUser,
   updateUser,
   deleteUser,
-  getUserByEmail,
   getUserByID,
-  putRefreshToken,
   changePassword,
 };
