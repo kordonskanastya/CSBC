@@ -4,7 +4,7 @@ const app = require('./routes');
 let listener;
 
 const start = () => {
-  listener = app.listen(port, '52.23.235.136', () => {
+  listener = app.listen(port, () => {
     console.log(`Server successfully started on port ${port}`);
   });
 };

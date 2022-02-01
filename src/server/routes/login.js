@@ -140,18 +140,19 @@ const login = express.Router();
  *          description: Some error happened
  */
 
+// eslint-disable-next-line consistent-return
 login.post('/login', (req, res, next) => {
   try {
     const { email } = req.body;
-
+    // eslint-disable-next-line consistent-return
     auth.authUser(req, res).then((data) => {
       if (data) {
-        const AToken = generateAccessToken(email); //accessToken
-        const RToken = generateRefreshToken(email); //refreshToken
-        service.putRefreshToken({ email, RToken }).finally();
+        const accessToken = generateAccessToken(email);
+        const refreshToken = generateRefreshToken(email);
+        service.putRefreshToken({ email, refreshToken }).finally();
         return res.json({
-          AccessToken: AToken,
-          RefreshToken: RToken,
+          accessToken,
+          refreshToken,
           message: 'You are logged-in',
         });
       }
@@ -160,10 +161,11 @@ login.post('/login', (req, res, next) => {
     return next(err);
   }
 });
+
 login.post('/login/forgotten',(req,res)=>{
  service.changePassword(req,res).then(data=>{
-   return res.json(data.message)
- })
+   res.json(data.message);
+ });
 
 });
 

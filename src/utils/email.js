@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const configEmail = require('../config').email;
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -13,13 +14,13 @@ function sendEmail(email, password) {
     from: configEmail.user,
     to: email,
     subject: 'Новый пароль',
-    text: 'Ваш новый пароль ' + password,
+    text: `Ваш новый пароль ${ password }`,
   };
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log(`Email sent: ${ info.response }`);
     }
   });
 }
