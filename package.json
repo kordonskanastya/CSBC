@@ -24,6 +24,7 @@
     "db-migrate-pg": "^1.2.2",
     "dotenv": "^14.1.0",
     "express": "^4.17.2",
+    "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "nodemailer": "^6.7.2",
     "pg": "^8.7.1",

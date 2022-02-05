@@ -1,6 +1,9 @@
 const express = require('express');
 
+const adminScheme=require('../../schemas/admin')
 const controllers = require('../controllers');
+
+const  statusCode=require('../../statusCode')
 
 const admin = express.Router();
 
@@ -64,7 +67,15 @@ const admin = express.Router();
  *         description: Some server error
  */
 
-admin.post('/reg', controllers.createUser);
+admin.post('/registration',   async(req, res) => {
+  const {error} = await adminScheme.createUserSchema.validate(req.body);
+  if(error){
+    console.log(error);
+    res.status(statusCode.badRequest).send({error:error.details[0].message});
+  }else {
+    controllers.createUser(req,res);
+  }
+});
 
 /**
  * @swagger

@@ -1,4 +1,5 @@
 const services = require('../services');
+const adminSchema=require('../schemas/admin');
 const {badRequest} = require('../statusCode');
 
 
@@ -13,7 +14,6 @@ async function getAllUsers(req, res) {
 
 async function createUser(req, res) {
   try {
-
     const {message, code} = await services.createUser(req.body);
     res.status(code).send(message);
   } catch (err) {
