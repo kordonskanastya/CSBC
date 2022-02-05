@@ -6,7 +6,7 @@ const statusCode = require('../statusCode');
 async function authUser(req, res) {
   const {email: emailUser, password: passwordUser} = req.body;
   const userFromDB = await db.getUserByEmail(emailUser);
-  if (userFromDB.length === 0) {
+  if (!userFromDB || userFromDB.length === 0) {
     res.status(statusCode.badRequest);
     res.json('User not found');
     return false;
