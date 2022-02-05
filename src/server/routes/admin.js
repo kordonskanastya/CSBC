@@ -1,9 +1,9 @@
 const express = require('express');
 
-const adminScheme=require('../../schemas/admin')
+const adminScheme=require('../../schemas/admin');
 const controllers = require('../controllers');
 
-const  statusCode=require('../../statusCode')
+const  statusCode=require('../../statusCode');
 
 const admin = express.Router();
 
@@ -68,12 +68,12 @@ const admin = express.Router();
  */
 
 admin.post('/registration',   async(req, res) => {
-  const {error} = await adminScheme.createUserSchema.validate(req.body);
+  const {error} = await adminScheme.createUserSchema.validateAsync(req.body);
   if(error){
     console.log(error);
     res.status(statusCode.badRequest).send({error:error.details[0].message});
   }else {
-    controllers.createUser(req,res);
+    await controllers.createUser(req, res);
   }
 });
 
@@ -119,8 +119,16 @@ admin.get('/users', controllers.getAllUsers);
  *      500:
  *        description: Some error happened
  */
-
-admin.get('/users/:id', controllers.getUserByID);
+admin.get('/users/:id', async (req,res)=>{
+  // eslint-disable-next-line max-len
+  const {error} = await adminScheme.validateIdUserSchema.validateAsync(req.params);
+  if(error){
+    console.log(error);
+    res.status(statusCode.badRequest).send({error:error.details[0].message});
+  }else {
+    await controllers.getUserByID(req, res);
+  }
+});
 /**
  * @swagger
  * /admin/update/{id}:
@@ -152,7 +160,17 @@ admin.get('/users/:id', controllers.getUserByID);
  *      500:
  *        description: Some error happened
  */
-admin.put('/update/:id', controllers.updateUser);
+admin.put('/update/:id',async (req,res)=>{
+  // eslint-disable-next-line max-len
+  const {error} = await adminScheme.updateUserSchema.validateAsync({...req.params ,...req.body});
+  if(error) {
+    console.log(error);
+    res.status(statusCode.badRequest).send({error:error.details[0].message});
+  }else {
+    await controllers.updateUser(req,res);
+  }
+
+});
 
 /**
  * @swagger
@@ -176,7 +194,16 @@ admin.put('/update/:id', controllers.updateUser);
  *        description: Some error happened
  */
 
-admin.delete('/delete/:id', controllers.deleteUser);
+admin.delete('/delete/:id', async (req,res)=>{
+  // eslint-disable-next-line max-len
+  const {error} = await adminScheme.validateIdUserSchema.validateAsync(req.params);
+  if(error){
+    console.log(error);
+    res.status(statusCode.badRequest).send({error:error.details[0].message});
+  }else {
+    await controllers.deleteUser(req, res);
+  }
+});
 
 
 module.exports = admin;

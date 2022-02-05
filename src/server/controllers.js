@@ -1,5 +1,4 @@
 const services = require('../services');
-const adminSchema=require('../schemas/admin');
 const {badRequest} = require('../statusCode');
 
 
