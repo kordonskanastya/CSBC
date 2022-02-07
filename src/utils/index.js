@@ -1,16 +1,13 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config');
-
-function generateAccessToken(email) {
-  return jwt.sign({email}, config.accessTokenSecret, {expiresIn: '12h'});
-}
-
-function generateRefreshToken(email) {
-  return jwt.sign({email}, config.refreshTokenSecret);
-
-}
+const generateToken = require('./generateToken');
+const hashPassword = require('./hashPassword');
+const generatePassword = require('./generatePassword');
+const sendEmailWithPassword = require('./sendEmailWithPassword');
+const swagger = require('./swagger');
 
 module.exports = {
-  generateAccessToken,
-  generateRefreshToken
+  ...generateToken,
+  hashPassword,
+  generatePassword,
+  sendEmailWithPassword,
+  ...swagger
 };

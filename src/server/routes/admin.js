@@ -1,9 +1,7 @@
 const express = require('express');
-
-const adminScheme=require('../../schemas/admin');
 const controllers = require('../controllers');
-
-const  statusCode=require('../../statusCode');
+const { joiValidator } = require('../middlewares');
+const schemas = require('../../schemas');
 
 const admin = express.Router();
 
@@ -67,14 +65,15 @@ const admin = express.Router();
  *         description: Some server error
  */
 
-admin.post('/registration',   async(req, res) => {
-  const {error} = await adminScheme.createUserSchema.validateAsync(req.body);
-  if(error){
-    console.log(error);
-    res.status(statusCode.badRequest).send({error:error.details[0].message});
-  }else {
-    await controllers.createUser(req, res);
-  }
+admin.post(
+  '/registration',
+  joiValidator(schemas.userSchema, 'body'),
+  async(req, res, next) => {
+    try {
+      await controllers.createUser(req, res);
+    } catch (err) {
+      next(err);
+    }
 });
 
 /**
@@ -119,15 +118,15 @@ admin.get('/users', controllers.getAllUsers);
  *      500:
  *        description: Some error happened
  */
-admin.get('/users/:id', async (req,res)=>{
-  // eslint-disable-next-line max-len
-  const {error} = await adminScheme.validateIdUserSchema.validateAsync(req.params);
-  if(error){
-    console.log(error);
-    res.status(statusCode.badRequest).send({error:error.details[0].message});
-  }else {
-    await controllers.getUserByID(req, res);
-  }
+admin.get(
+  '/user/:id',
+  joiValidator(schemas.userIdSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      await controllers.getUserByID(req, res);
+    } catch (err) {
+      next(err);
+    }
 });
 /**
  * @swagger
@@ -160,16 +159,16 @@ admin.get('/users/:id', async (req,res)=>{
  *      500:
  *        description: Some error happened
  */
-admin.put('/update/:id',async (req,res)=>{
-  // eslint-disable-next-line max-len
-  const {error} = await adminScheme.updateUserSchema.validateAsync({...req.params ,...req.body});
-  if(error) {
-    console.log(error);
-    res.status(statusCode.badRequest).send({error:error.details[0].message});
-  }else {
-    await controllers.updateUser(req,res);
-  }
-
+admin.put(
+  '/update/:id',
+  joiValidator(schemas.userIdSchema, 'params'),
+  joiValidator(schemas.userSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      await controllers.updateUser(req,res);
+    } catch (err) {
+      next(err);
+    }
 });
 
 /**
@@ -194,15 +193,15 @@ admin.put('/update/:id',async (req,res)=>{
  *        description: Some error happened
  */
 
-admin.delete('/delete/:id', async (req,res)=>{
-  // eslint-disable-next-line max-len
-  const {error} = await adminScheme.validateIdUserSchema.validateAsync(req.params);
-  if(error){
-    console.log(error);
-    res.status(statusCode.badRequest).send({error:error.details[0].message});
-  }else {
-    await controllers.deleteUser(req, res);
-  }
+admin.delete(
+  '/delete/:id',
+  joiValidator(schemas.userIdSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      await controllers.deleteUser(req, res);
+    } catch (err) {
+      next(err);
+    }
 });
 
 

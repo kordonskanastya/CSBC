@@ -1,5 +1,7 @@
 const admin = require('./admin');
+const auth = require('./auth');
 
 module.exports ={
-  ...admin
+  ...admin,
+  ...auth
 };

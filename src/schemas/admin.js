@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const createUserSchema = Joi.object({
+const userSchema = Joi.object({
   username: Joi.string()
     .min(3)
     .max(30)
@@ -14,36 +14,16 @@ const createUserSchema = Joi.object({
       .min(3)
       .max(30)
       .required(),
-  email: Joi.string().email().lowercase().required(),
-  password: Joi.string().min(8).required().strict(),
+  email: Joi.string().email().max(128).lowercase().required(),
+  password: Joi.string().min(8).max(32).required().strict(),
 });
 
-const updateUserSchema = Joi.object({
-  id: Joi.number().min(1).positive(),
-  username:Joi.string()
-    .min(3)
-    .max(30)
-    .required(),
-  surname:Joi.string()
-    .min(3)
-    .max(30)
-    .required(),
-  patronymic:
-    Joi.string()
-      .min(3)
-      .max(30)
-      .required(),
-  email: Joi.string().email().lowercase().required(),
-  password: Joi.string().min(8).required().strict(),
-});
-
-const validateIdUserSchema = Joi.object({
+const userIdSchema = Joi.object({
   id: Joi.number().min(1).positive(),
 });
 
 
 module.exports = {
-  createUserSchema,
-  updateUserSchema,
-  validateIdUserSchema
+  userSchema,
+  userIdSchema
 };

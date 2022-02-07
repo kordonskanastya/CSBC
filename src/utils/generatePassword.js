@@ -1,13 +1,3 @@
-const { createHmac } = require('crypto');
-const { passwordSecret } = require('../config');
-
-function hashingPassword(password) {
-  const hash = createHmac('sha256', passwordSecret)
-               .update(password)
-               .digest('hex');
-  return hash;
-}
-
 function generatePassword() {
   let password = '';
   const symbols =
@@ -20,4 +10,4 @@ function generatePassword() {
   return password;
 }
 
-module.exports = { hashingPassword, generatePassword };
+module.exports = generatePassword;

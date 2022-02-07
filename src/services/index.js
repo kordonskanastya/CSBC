@@ -1,10 +1,13 @@
 const config = require('../config');
-const sendEmail = require('../utils/email');
+const sendEmailWithPassword = require('../utils');
 const {
-  hashingPassword,
-  generatePassword, } = require('../utils/hash');
+  hashPassword,
+  generatePassword
+} = require('../utils');
 const db = require('../db')(config.db);
 const statusCode = require('../statusCode');
+const authenticatingUser = require('./helpers/loginCheck');
+const { unauthorized } = require('../statusCode');
 
 function successMessage(functionMessage) {
   return {
@@ -19,15 +22,13 @@ async function getAllUsers() {
 }
 
 async function createUser(req) {
-  req.password = hashingPassword(req.password);
+  req.password = hashPassword(req.password);
   const newUser = await db.createUser(req);
-
   return successMessage(newUser);
 }
 
 async function updateUser(req) {
   const updatedUser = await db.updateUser({ id: req.params.id, ...req.body });
-
   return successMessage(updatedUser);
 }
 
@@ -45,11 +46,20 @@ async function changePassword(req) {
   const pass = generatePassword();
   const user = {
     email: req.body.email,
-    newPassword: hashingPassword(pass),
+    newPassword: hashPassword(pass),
   };
-  sendEmail(user.email, pass);
-  const message  = await db.changePassword(user);
+  sendEmailWithPassword(user.email, pass);
+  const message = await db.changePassword(user);
   return successMessage(message);
+}
+
+async function loginCheck (body) {
+  try {
+    await authenticatingUser(body);
+    return successMessage({ message: 'You are logged-in' });
+  } catch (err) {
+    return { code: unauthorized, message: err.message };
+  }
 }
 
 module.exports = {
@@ -59,4 +69,5 @@ module.exports = {
   deleteUser,
   getUserByID,
   changePassword,
+  loginCheck,
 };

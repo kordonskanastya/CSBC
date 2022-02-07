@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-function sendEmail(email, password) {
+function sendEmailWithPassword(email, password) {
   const mailOptions = {
     from: configEmail.user,
     to: email,
@@ -25,4 +25,4 @@ function sendEmail(email, password) {
   });
 }
 
-module.exports = sendEmail;
+module.exports = sendEmailWithPassword;

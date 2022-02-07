@@ -142,7 +142,7 @@ module.exports = (config) => {
       }
     },
 
-    addRefreshToken: async (email, refreshToken) => {
+    putRefreshToken: async (email, refreshToken) => {
       try {
         if (!email) {
           console.log('ERROR:No email defined');
