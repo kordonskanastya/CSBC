@@ -4,6 +4,8 @@ const auth = require('../../utils/auth');
 const db = require('../../db')(config.db);
 const services = require('../../services');
 const { generateAccessToken, generateRefreshToken } = require('../../utils');
+const { joiValidator } = require('../middlewares');
+const schemas = require('../../../schemas');
 
 const login = express.Router();
 
@@ -142,24 +144,28 @@ const login = express.Router();
  */
 
 // eslint-disable-next-line consistent-return
-login.post('/login', (req, res, next) => {
-  try {
-    const { email } = req.body;
-    auth.authUser(req, res).then((authFlag) => {
-      if (authFlag) {
-        const accessToken = generateAccessToken(email);
-        const refreshToken = generateRefreshToken(email);
-        db.addRefreshToken(email, refreshToken);
-        res.json({
-          accessToken,
-          refreshToken,
-          message: 'You are logged-in',
-        });
-      }
-    });
-  } catch (err) {
-    return next(err);
-  }
+login.post(
+  '/login',
+  joiValidator(schemas.schemaLogin, 'body'),
+  // eslint-disable-next-line consistent-return
+  (req, res, next) => {
+    try {
+      const { email } = req.body;
+      auth.authUser(req, res).then((authFlag) => {
+        if (authFlag) {
+          const accessToken = generateAccessToken(email);
+          const refreshToken = generateRefreshToken(email);
+          db.addRefreshToken(email, refreshToken);
+          res.json({
+            accessToken,
+            refreshToken,
+            message: 'You are logged-in',
+          });
+        }
+      });
+    } catch (err) {
+      return next(err);
+    }
 });
 
 login.post('/login/forgotten',(req,res)=>{
