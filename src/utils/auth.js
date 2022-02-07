@@ -1,6 +1,6 @@
 const config = require('../config');
-const {hashingPassword} = require('./hash');
 const db = require('../db')(config.db);
+const {hashingPassword} = require('./hash');
 const statusCode = require('../statusCode');
 
 async function authUser(req, res) {
@@ -23,6 +23,3 @@ async function authUser(req, res) {
 module.exports = {
   authUser
 };
-
-
-
