@@ -16,6 +16,10 @@ const userSchema = Joi.object({
       .required(),
   email: Joi.string().email().max(128).lowercase().required(),
   password: Joi.string().min(8).max(32).required().strict(),
+  role: Joi.string()
+    .valid('student', 'curator', 'teacher', 'admin')
+    .insensitive()
+    .required(),
 });
 
 const userIdSchema = Joi.object({
