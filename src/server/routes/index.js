@@ -4,6 +4,7 @@ const login = require('./login');
 const admin = require('./admin');
 const swagger = require('../../utils');
 const {authenticateToken, errorHandler} = require('../middlewares');
+const { ENVIRONMENT } = require('../../../constants');
 
 const app = express();
 
@@ -11,11 +12,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/auth', login);
-app.use(
-  '/api/docs',
-  swagger.swaggerUI.serve,
-  swagger.swaggerUI.setup(swagger.swaggerDocs)
-);
+
+if ( ENVIRONMENT === 'dev') {
+  app.use(
+    '/api/docs',
+    swagger.swaggerUI.serve,
+    swagger.swaggerUI.setup(swagger.swaggerDocs)
+  );
+}
 
 app.use(authenticateToken);
 

@@ -29,6 +29,7 @@ async function loginCheck (body) {
       console.log(`Access Token: ${accessToken}`);
       console.log(`Refresh Token: ${refreshToken}`);
     }
+  return accessToken;
 }
 
 module.exports = loginCheck;

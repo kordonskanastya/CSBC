@@ -55,8 +55,8 @@ async function changePassword(req) {
 
 async function loginCheck (body) {
   try {
-    await authenticatingUser(body);
-    return successMessage({ message: 'You are logged-in' });
+    const accessToken = await authenticatingUser(body);
+    return successMessage(accessToken);
   } catch (err) {
     return { code: unauthorized, message: err.message };
   }

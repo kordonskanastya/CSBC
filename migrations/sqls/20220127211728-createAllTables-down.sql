@@ -5,4 +5,3 @@ drop table students;
 drop table groups;
 drop table specialities;
 drop table users;
-drop table roles;

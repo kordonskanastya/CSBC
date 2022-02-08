@@ -1,7 +1,3 @@
-create table roles(
-    id int primary key generated always as identity,
-    name varchar(100)
-);
 create table users(
     id int primary key generated always as identity ,
     username varchar(100) not null ,
@@ -9,7 +5,7 @@ create table users(
     patronymic varchar(100)not null ,
     email varchar(100) unique not null ,
     password varchar(1000) not null ,
-    role_id  int references roles(id),
+    role varchar(100),
     refreshToken varchar
 );
 create table specialities(
@@ -27,15 +23,16 @@ create table groups(
 );
 create table students(
     id int primary key generated always as identity,
-    edobo_id varchar(8),
-    fk_group_id int references groups(id)
+    edebo_id varchar(8),
+    fk_group_id int references groups(id),
+    fk_user_id int references users(id)
 );
 create table courses(
     id int primary key generated always as identity,
     lecturer_id int references users(id),
-    practitioner_id int references users(id),
-    isCompulsory bool not null ,
-    credits int not null ,
+    -- practitioner_id int references users(id),
+    isCompulsory bool not null,
+    credits int not null,
     starting_semester int,
     quantity_semester int default 1,
     name varchar(100) not null
@@ -43,7 +40,7 @@ create table courses(
 create table grades(
     student_id int references students(id),
     course_id int references courses(id),
-    semester int ,
+    semester int,
     primary key (student_id,course_id,semester),
     grade float
 );

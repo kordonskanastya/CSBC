@@ -1,3 +1,5 @@
 module.exports = Object.freeze({
-  ENVIRONMENT: 'dev',
+  ENVIRONMENT: 'dev'
 });
+
+

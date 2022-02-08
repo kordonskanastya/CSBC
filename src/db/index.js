@@ -53,12 +53,8 @@ module.exports = (config) => {
 
     getUserByEmail: async (email) => {
       try {
-        if (!email) {
-          throw new Error('ERROR: No product id defined');
-        }
-
-        const res = await client.query(
-          'SELECT * From users WHERE email like $1 ',
+       const res = await client.query(
+          'SELECT * From users WHERE email like $1',
           [`%${ email }%`],
         );
 
@@ -69,13 +65,21 @@ module.exports = (config) => {
       }
     },
 
-    createUser: async ({ username, surname, patronymic, email, password }) => {
+    createUser: async ({
+      username,
+      surname,
+      patronymic,
+      email,
+      password,
+      role
+    }) => {
       try {
         const res = await client.query(
-          `INSERT INTO users(id, username, surname, patronymic, email, password)
-           VALUES (DEFAULT, $1, $2, $3, $4, $5)
+          `INSERT INTO users(id, username, surname,
+            patronymic, email, password, role)
+           VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)
            RETURNING *`,
-          [username, surname, patronymic, email, password],
+          [username, surname, patronymic, email, password, role],
         );
         console.log('New User created');
         return res.rows[0];
