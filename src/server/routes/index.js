@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { env } = require('../../config');
 const login = require('./login');
 const admin = require('./admin');
 const swagger = require('../../utils');
 const {authenticateToken, errorHandler} = require('../middlewares');
-const { ENVIRONMENT } = require('../../../constants');
+const Constants = require('../../Constants');
 
 const app = express();
 
@@ -13,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/auth', login);
 
-if ( ENVIRONMENT === 'dev') {
+if ( env === Constants.env.dev ) {
   app.use(
     '/api/docs',
     swagger.swaggerUI.serve,

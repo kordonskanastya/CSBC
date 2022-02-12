@@ -6,6 +6,7 @@ function exit(field) {
 }
 
 const config = {
+  env: process.env.ENVIRONMENT || 'dev',
   port: process.env.PORT || 3000,
   accessTokenSecret:
     process.env.ACCESS_TOKEN_SECRET_KEY || exit('AccessTokenSecretKey'),

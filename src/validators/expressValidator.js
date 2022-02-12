@@ -1,4 +1,4 @@
-const { unprocessableEntity } = require('../../statusCode');
+const { unprocessableEntity } = require('../statusCode');
 
 const joiValidator = (schema, property) => (req, res, next) => {
   const { error } = schema.validate(req[property]);
