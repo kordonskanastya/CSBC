@@ -1,4 +1,4 @@
-const config = require('../config');
+const { env } = require('../config');
 const Constants = require('../Constants');
 const {sendEmailWithPassword} = require('../utils');
 const {
@@ -7,9 +7,8 @@ const {
   generateAccessToken,
   generateRefreshToken,
 } = require('../utils');
-const db = require('../db')(config.db);
+const db = require('../db');
 const statusCode = require('../statusCode');
-const { unauthorized } = require('../statusCode');
 
 function successMessage(functionMessage) {
   return {
@@ -73,7 +72,7 @@ async function authenticatingUser (body) {
     const accessToken = generateAccessToken(email);
     const refreshToken = generateRefreshToken(email);
     await db.putRefreshToken(email, refreshToken);
-    if ( config.env === Constants.env.dev ) {
+    if ( env === Constants.env.dev ) {
       console.log(`Access Token: ${accessToken}`);
       console.log(`Refresh Token: ${refreshToken}`);
     }
@@ -85,7 +84,7 @@ async function loginCheck (body) {
     const accessToken = await authenticatingUser(body);
     return successMessage(accessToken);
   } catch (err) {
-    return { code: unauthorized, message: err.message };
+    return { code: statusCode.unauthorized, message: err.message };
   }
 }
 
