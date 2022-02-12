@@ -1,12 +1,14 @@
 const config = require('../config');
-const sendEmailWithPassword = require('../utils');
+const Constants = require('../Constants');
+const {sendEmailWithPassword} = require('../utils');
 const {
   hashPassword,
-  generatePassword
+  generatePassword,
+  generateAccessToken,
+  generateRefreshToken,
 } = require('../utils');
 const db = require('../db')(config.db);
 const statusCode = require('../statusCode');
-const authenticatingUser = require('./helpers/loginCheck');
 const { unauthorized } = require('../statusCode');
 
 function successMessage(functionMessage) {
@@ -51,6 +53,31 @@ async function changePassword(req) {
   sendEmailWithPassword(user.email, pass);
   const message = await db.changePassword(user);
   return successMessage(message);
+}
+
+async function checkPassword(body) {
+  const {email: emailUser, password: passwordUser} = body;
+  const userFromDB = await db.getUserByEmail(emailUser);
+  if (userFromDB.length === 0) {
+    throw new Error('No user was found');
+  }
+  const hashUserPassword = hashPassword(passwordUser);
+  if (hashUserPassword !== userFromDB.password) {
+    throw new Error('Password is not correct');
+  }
+}
+
+async function authenticatingUser (body) {
+    const { email } = body;
+    await checkPassword(body);
+    const accessToken = generateAccessToken(email);
+    const refreshToken = generateRefreshToken(email);
+    await db.putRefreshToken(email, refreshToken);
+    if ( config.env === Constants.env.dev ) {
+      console.log(`Access Token: ${accessToken}`);
+      console.log(`Refresh Token: ${refreshToken}`);
+    }
+  return accessToken;
 }
 
 async function loginCheck (body) {

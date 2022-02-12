@@ -1,6 +1,6 @@
 const express = require('express');
-const { loginCheck, } = require('../controllers');
-const { joiValidator, changePassword } = require('../middlewares');
+const { loginCheck, changePassword} = require('../controllers');
+const { joiValidator} = require('../middlewares');
 const schemas = require('../../schemas');
 
 const login = express.Router();

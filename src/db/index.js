@@ -1,4 +1,6 @@
 const { Pool } = require('pg');
+const Constants = require('../Constants');
+const { env } = require('../config');
 
 module.exports = (config) => {
   const client = new Pool(config);
@@ -9,7 +11,9 @@ module.exports = (config) => {
         const data = await client.query('SELECT * FROM users');
         return data.rows;
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -32,7 +36,9 @@ module.exports = (config) => {
 
         return res.rows[0];
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -41,7 +47,9 @@ module.exports = (config) => {
         console.log('hello from pg test connection');
         return await client.query('SELECT NOW()');
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -60,7 +68,9 @@ module.exports = (config) => {
 
         return res.rows[0];
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -84,7 +94,9 @@ module.exports = (config) => {
         console.log('New User created');
         return res.rows[0];
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -105,7 +117,9 @@ module.exports = (config) => {
           return 'User deleted';
         }
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -141,7 +155,9 @@ module.exports = (config) => {
         console.log(`DEBUG:  User updated: ${JSON.stringify(res.rows[0])}`);
         return res.rows[0];
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -160,7 +176,9 @@ module.exports = (config) => {
         );
         return res.rows;
       } catch (err) {
-        console.log(err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
         throw err;
       }
     },
@@ -176,7 +194,9 @@ module.exports = (config) => {
         }
         return {result: 'Password successfully changed'};
       } catch (err) {
-        console.error(err.message || err);
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
       }
     },
   };
