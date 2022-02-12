@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { accessTokenSecret } = require('../../config');
+const statusCode=require('../../statusCode');
 
 // eslint-disable-next-line consistent-return
 const authenticateToken = (req, res, next) => {
@@ -12,7 +13,7 @@ const authenticateToken = (req, res, next) => {
   jwt.verify(token, accessTokenSecret, (err, user) => {
     if (err) {
       console.log(err.message || err);
-      return res.sendStatus(403);
+      return res.sendStatus(statusCode.unauthorized);
     }
     req.user = user;
     next();
