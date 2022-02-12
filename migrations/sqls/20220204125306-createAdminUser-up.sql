@@ -1,2 +1,2 @@
 INSERT INTO users (username,surname,patronymic,email,"password",role,refreshtoken) VALUES
- ('Vova_4','Batkovich_4','zhopa_4','adminadmin@gmail.com','56f15335902f5a9e1c8be26e8e6f8bcec630848d84bea5b3a998a1665e0edaaa',NULL,'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvcmRvbnNrYW5hc3R5YUBnbWFpbC5jb20iLCJpYXQiOjE2NDM3NDExMzJ9.1Yp7WoMjiwLh7uo4Skv4em8ZzXHJMsYtwsk5rh_sKt0');
+ ('Vova','Vovan','Batkovich','adminadmin@gmail.com','10fe29fd480fa5f2daa8e23d0df3eed5aa13c2e8dcf68dbcd0e420411a3bfb54',NULL,'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtvcmRvbnNrYW5hc3R5YUBnbWFpbC5jb20iLCJpYXQiOjE2NDM3NDExMzJ9.1Yp7WoMjiwLh7uo4Skv4em8ZzXHJMsYtwsk5rh_sKt0');
