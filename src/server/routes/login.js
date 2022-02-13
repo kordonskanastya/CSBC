@@ -120,7 +120,7 @@ const login = express.Router();
  * /auth/login:
  *   post:
  *     summary: Login a user
- *     tags: [Users]
+ *     tags: [Authentication]
  *     requestBody:
  *        required: true
  *        content:

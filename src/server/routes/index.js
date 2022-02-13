@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { env } = require('../../config');
 const login = require('./login');
-const admin = require('./admin');
+const admin = require('./admin/index');
 const swagger = require('../../utils');
 const {authenticateToken, errorHandler} = require('../middlewares');
 const Constants = require('../../Constants');
@@ -24,7 +24,8 @@ if ( env === Constants.env.dev ) {
 
 app.use(authenticateToken);
 
-app.use('/admin', admin);
+app.use('/admin/users', admin.users);
+app.use('/admin/courses',admin.subjects);
 app.get('/ping', (req, res) => {
   res.send('pong');
 });
