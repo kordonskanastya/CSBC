@@ -11,7 +11,7 @@ create table users(
 create table specialities(
 id int primary key generated always as identity ,
 name varchar(100) not null ,
-code int not null
+code varchar(100) not null
 );
 create table groups(
   	id int  primary key generated always as identity ,
@@ -31,10 +31,10 @@ create table courses(
     id int primary key generated always as identity,
     lecturer_id int references users(id),
     -- practitioner_id int references users(id),
-    isCompulsory bool not null,
+    -- isCompulsory bool not null,
     credits int not null,
-    starting_semester int,
-    quantity_semester int default 1,
+    -- starting_semester int,
+    -- quantity_semester int default 1,
     name varchar(100) not null
 );
 create table grades(
