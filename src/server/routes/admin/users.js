@@ -1,10 +1,9 @@
 const express = require('express');
-const controllers = require('../controllers');
-const joiValidator = require('../../validators/expressValidator');
-const schemas = require('../../validators/schemas');
+const controllers = require('../../controllers');
+const joiValidator = require('../../../validators/expressValidator');
+const schemas = require('../../../validators/schemas');
 
-const admin = express.Router();
-
+const users = express.Router();
 /**
  * @swagger
  * components:
@@ -43,16 +42,16 @@ const admin = express.Router();
  *         patronymic: Georgovich
  *         email: pupvasya@gmail.com
  *         password: VasyaKrutoy
- *         role: admin
+ *         role: users
  */
 
 
 /**
  * @swagger
- * /admin/registration:
+ * /users/registration:
  *   post:
  *     summary: Create user
- *     tags: [Admin]
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
@@ -72,7 +71,7 @@ const admin = express.Router();
  *         description: Some server error
  */
 
-admin.post(
+users.post(
   '/registration',
   joiValidator(schemas.userSchema, 'body'),
   async(req, res, next) => {
@@ -85,10 +84,10 @@ admin.post(
 
 /**
  * @swagger
- * /admin/users:
+ * /users/:
  *   get:
  *     summary: Get all users
- *     tags: [Admin]
+ *     tags: [Users]
  *     responses:
  *       200:
  *         content:
@@ -100,15 +99,15 @@ admin.post(
  *       500:
  *         description: Some server error
  */
-admin.get('/users', controllers.getAllUsers);
+users.get('/', controllers.getAllUsers);
 
 
 /**
  * @swagger
- * /admin/users/{id}:
+ * /users/{id}:
  *  get:
  *    summary: Find User by  id
- *    tags: [Admin]
+ *    tags: [Users]
  *    parameters:
  *      - in: path
  *        name: id
@@ -129,8 +128,8 @@ admin.get('/users', controllers.getAllUsers);
  *      500:
  *        description: Some error happened
  */
-admin.get(
-  '/user/:id',
+users.get(
+  '/:id',
   joiValidator(schemas.userIdSchema, 'params'),
   async (req, res, next) => {
     try {
@@ -141,10 +140,10 @@ admin.get(
 });
 /**
  * @swagger
- * /admin/update/{id}:
+ * /update/{id}:
  *  put:
  *    summary: Update User by  id
- *    tags: [Admin]
+ *    tags: [Users]
  *    parameters:
  *      - in: path
  *        name: id
@@ -172,7 +171,7 @@ admin.get(
  *      500:
  *        description: Some error happened
  */
-admin.put(
+users.put(
   '/update/:id',
   joiValidator(schemas.userIdSchema, 'params'),
   joiValidator(schemas.userSchema, 'body'),
@@ -186,10 +185,10 @@ admin.put(
 
 /**
  * @swagger
- * /admin/delete/{id}:
+ * /delete/{id}:
  *  delete:
  *    summary: Delete User by  id
- *    tags: [Admin]
+ *    tags: [Users]
  *    parameters:
  *      - in: path
  *        name: id
@@ -208,7 +207,7 @@ admin.put(
  *        description: Some error happened
  */
 
-admin.delete(
+users.delete(
   '/delete/:id',
   joiValidator(schemas.userIdSchema, 'params'),
   async (req, res, next) => {
@@ -220,4 +219,4 @@ admin.delete(
 });
 
 
-module.exports = admin;
+module.exports = users;
