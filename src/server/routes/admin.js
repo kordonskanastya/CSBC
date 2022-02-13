@@ -17,6 +17,7 @@ const admin = express.Router();
  *         - patronymic
  *         - email
  *         - password
+ *         - role
  *       properties:
  *         username:
  *           type: string
@@ -33,18 +34,22 @@ const admin = express.Router();
  *         password:
  *           type: string
  *           description: User password
+ *         role:
+ *         type: string
+ *         description: User role
  *       example:
  *         username: Vasya
  *         surname: Pup
  *         patronymic: Georgovich
  *         email: pupvasya@gmail.com
  *         password: VasyaKrutoy
+ *         role: admin
  */
 
 
 /**
  * @swagger
- * /admin/reg:
+ * /admin/registration:
  *   post:
  *     summary: Create user
  *     tags: [Admin]
@@ -61,6 +66,8 @@ const admin = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/AdminRequestBody'
+ *       401:
+ *          description: Unauthorized
  *       500:
  *         description: Some server error
  */
@@ -88,6 +95,8 @@ admin.post(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
  *       500:
  *         description: Some server error
  */
@@ -113,7 +122,9 @@ admin.get('/users', controllers.getAllUsers);
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/User'
- *      400:
+ *      401:
+ *          description: Unauthorized
+ *      404:
  *        description: User  not found
  *      500:
  *        description: Some error happened
@@ -154,6 +165,8 @@ admin.get(
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/User'
+ *      401:
+ *          description: Unauthorized
  *      400:
  *        description: User  not found
  *      500:
@@ -187,7 +200,9 @@ admin.put(
  *    responses:
  *      200:
  *        description:  User deleted
- *      400:
+ *      401:
+ *          description: Unauthorized
+ *      404:
  *        description: User  not found
  *      500:
  *        description: Some error happened
