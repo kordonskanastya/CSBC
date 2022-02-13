@@ -46,21 +46,17 @@ module.exports = (config) => {
 
     createCourse: async ({
                          lecturerId,
-                         isComplusory,
                          credits,
-                         startingSemester,
-                         quantitySemester,
                          name
                        }) => {
       try {
         const res = await client.query(
-          `INSERT INTO courses(id,lecturer_id ,iscompulsory,
-            credits, starting_semester, quantity_semester, name)
-           VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)
+          `INSERT INTO courses(id,lecturer_id,
+            credits, name)
+           VALUES (DEFAULT, $1, $2, $3)
            RETURNING *`,
 
-          [lecturerId, isComplusory,
-            credits, startingSemester, quantitySemester, name],
+          [lecturerId, credits, name],
         );
         console.log('New Subject created');
         return res.rows[0];
