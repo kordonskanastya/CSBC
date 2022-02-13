@@ -1,5 +1,5 @@
 const express = require('express');
-const { loginCheck, changePassword} = require('../controllers');
+const { loginCheck, changePassword} = require('../controllers/auth');
 const joiValidator = require('../../validators/expressValidator');
 const schemas = require('../../validators/schemas');
 

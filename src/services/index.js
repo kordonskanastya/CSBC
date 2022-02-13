@@ -22,14 +22,15 @@ async function getAllUsers() {
   return successMessage(dbData);
 }
 
-async function createUser(req) {
-  req.password = hashPassword(req.password);
-  const newUser = await db.createUser(req);
+async function createUser(body) {
+  const newUser =
+    await db.createUser({password:hashPassword(body.password),...body});
   return successMessage(newUser);
 }
 
 async function updateUser(req) {
-  const updatedUser = await db.updateUser({ id: req.params.id, ...req.body });
+  const updatedUser = await db.updateUser({ id: req.params.id,
+    password: hashPassword(req.body.password),...req.body });
   return successMessage(updatedUser);
 }
 
