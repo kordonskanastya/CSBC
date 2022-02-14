@@ -1,17 +1,30 @@
 const { successMessage } = require('../utils');
 const db = require('../db');
+const statusCode = require('../statusCode');
 
 async function createCourse(body){
-  const newSubject = await db.createCourse(body);
-  return successMessage(newSubject);
+  try {
+    const newSubject = await db.createCourse(body);
+    return successMessage(newSubject);
+  }catch (err){
+    return { code: statusCode.serverError, message: err.message };
+  }
 }
 async function getAllCourses(body){
-  const newSubject = await db.getAllCourses(body);
-  return successMessage(newSubject);
+  try {
+    const newSubject = await db.getAllCourses(body);
+    return successMessage(newSubject);
+  }catch (err){
+    return { code: statusCode.serverError, message: err.message };
+  }
 }
 async function getCourseByID(req) {
-  const user = await db.getCourseByID(req);
-  return successMessage(user);
+  try {
+    const user = await db.getCourseByID(req);
+    return successMessage(user);
+  } catch (err){
+    return { code: statusCode.serverError, message: err.message };
+  }
 }
 
 module.exports = {

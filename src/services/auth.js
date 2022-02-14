@@ -11,29 +11,41 @@ const {
   successMessage
 } = require('../utils');
 
+
+// eslint-disable-next-line consistent-return
 async function checkPassword(body) {
-  const {email: emailUser, password: passwordUser} = body;
-  const userFromDB = await db.getUserByEmail(emailUser);
-  if (userFromDB.length === 0) {
-    throw new Error('No user was found');
-  }
-  const hashUserPassword = hashPassword(passwordUser);
-  if (hashUserPassword !== userFromDB.password) {
-    throw new Error('Password is not correct');
+  try {
+
+    const { email: emailUser, password: passwordUser } = body;
+    const userFromDB = await db.getUserByEmail(emailUser);
+    if (userFromDB.length === 0) {
+      throw new Error('No user was found');
+    }
+    const hashUserPassword = hashPassword(passwordUser);
+    if (hashUserPassword !== userFromDB.password) {
+      throw new Error('Password is not correct');
+    }
+  }catch (err){
+    return { code: statusCode.serverError, message: err.message };
   }
 }
 
 async function authenticatingUser (body) {
+  try {
     const { email } = body;
     await checkPassword(body);
     const accessToken = generateAccessToken(email);
     const refreshToken = generateRefreshToken(email);
     await db.putRefreshToken(email, refreshToken);
-    if ( env === constants.env.dev ) {
+    if (env === constants.env.dev) {
       console.log(`Access Token: ${accessToken}`);
       console.log(`Refresh Token: ${refreshToken}`);
     }
-  return accessToken;
+    return accessToken;
+  }
+  catch (err){
+    return { code: statusCode.serverError, message: err.message };
+  }
 }
 
 async function loginCheck (body) {
@@ -48,14 +60,19 @@ async function loginCheck (body) {
 // ------------------------------------
 
 async function changePassword(req) {
-  const pass = generatePassword();
-  const user = {
-    email: req.body.email,
-    newPassword: hashPassword(pass),
-  };
-  sendEmailWithPassword(user.email, pass);
-  const message = await db.changePassword(user);
-  return successMessage(message);
+  try {
+    const pass = generatePassword();
+    const user = {
+      email: req.body.email,
+      newPassword: hashPassword(pass),
+    };
+    sendEmailWithPassword(user.email, pass);
+    const message = await db.changePassword(user);
+    return successMessage(message);
+  }
+  catch (err){
+    return { code: statusCode.serverError, message: err.message };
+  }
 }
 
 module.exports = {
