@@ -5,7 +5,7 @@ const login = require('./login');
 const admin = require('./admin/index');
 const swagger = require('../../utils');
 const {authenticateToken, errorHandler} = require('../middlewares');
-const Constants = require('../../Constants');
+const constants = require('../../utils/constants');
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/auth', login);
 
-if ( env === Constants.env.dev ) {
+if ( env === constants.env.dev ) {
   app.use(
     '/api/docs',
     swagger.swaggerUI.serve,

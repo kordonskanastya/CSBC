@@ -1,4 +1,5 @@
 require('dotenv').config();
+const constants = require('../utils/constants');
 
 function exit(field) {
   console.error(`Can't working without value for field: ${field}`);
@@ -6,7 +7,7 @@ function exit(field) {
 }
 
 const config = {
-  env: process.env.ENVIRONMENT || 'dev',
+  env: process.env.ENVIRONMENT || constants.env.dev,
   port: process.env.PORT || 3000,
   accessTokenSecret:
     process.env.ACCESS_TOKEN_SECRET_KEY || exit('AccessTokenSecretKey'),

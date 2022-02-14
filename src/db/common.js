@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const Constants = require('../Constants');
+const Constants = require('../utils/constants');
 const { env } = require('../config');
 
 module.exports = (config) => {
