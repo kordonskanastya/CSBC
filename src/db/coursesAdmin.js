@@ -20,7 +20,7 @@ module.exports = (config) => {
     getCourseByID: async ({ id }) => {
       try {
         if (!id) {
-          return new Error('ERROR: No course id defined');
+          throw new Error('ERROR: No course id defined');
         }
 
         // eslint-disable-next-line max-len
@@ -28,7 +28,7 @@ module.exports = (config) => {
           id,
         ]);
         if (validId.rows.length === 0) {
-          return  new Error('ERROR:User course find');
+          throw  new Error('ERROR:User course find');
         }
 
         const res = await client.query('SELECT * From users WHERE id=$1 ', [
