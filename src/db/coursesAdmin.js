@@ -31,7 +31,7 @@ module.exports = (config) => {
           throw  new Error('ERROR:User course find');
         }
 
-        const res = await client.query('SELECT * From users WHERE id=$1 ', [
+        const res = await client.query('SELECT * From courses WHERE id=$1 ', [
           id,
         ]);
 

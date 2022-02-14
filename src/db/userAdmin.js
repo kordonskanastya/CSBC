@@ -52,15 +52,22 @@ module.exports = (config) => {
       role
     }) => {
       try {
-        const res = await client.query(
-          `INSERT INTO users(id, username, surname,
+        const emailUser=await client.query(
+          'Select email from users where email=$1 ',[email]);
+        if(emailUser.rows.length!==0){
+          // eslint-disable-next-line max-len
+          throw new Error(`ERROR:Email ${email} is defined,please try another email`);
+        }else {
+          const res = await client.query(
+            `INSERT INTO users(id, username, surname,
             patronymic, email, password, role)
            VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)
            RETURNING *`,
-          [username, surname, patronymic, email, password, role],
-        );
-        console.log('New User created');
-        return res.rows[0];
+            [username, surname, patronymic, email, password, role],
+          );
+          console.log('New User created');
+          return res.rows[0];
+        }
       } catch (err) {
         if ( env === Constants.env.dev ) {
           console.error(err.message || err);
@@ -96,32 +103,39 @@ module.exports = (config) => {
         if (!id) {
           throw new Error('ERROR: No product id defined');
         }
-        const query = [];
-        const values = [];
-        // eslint-disable-next-line no-restricted-syntax
-        for (const [i, [k, v]] of Object.entries(user).entries()) {
-          query.push(`${k} = $${i + 1}`);
-          values.push(v);
-        }
+        const emailUser=await client.query(
+          'Select email from users where email=$1 ',[user.email]);
+        if(emailUser.rows.length!==0){
+          // eslint-disable-next-line max-len
+          throw new Error(`ERROR: Email${user.email} is defined,please try another email`);
+        }else {
+          const query = [];
+          const values = [];
+          // eslint-disable-next-line no-restricted-syntax
+          for (const [i, [k, v]] of Object.entries(user).entries()) {
+            query.push(`${k} = $${i + 1}`);
+            values.push(v);
+          }
 
-        if (!values.length) {
-          throw new Error('ERROR: Nothing to update');
-        }
+          if (!values.length) {
+            throw new Error('ERROR: Nothing to update');
+          }
 
-        const res = await client.query(
-          `UPDATE users
+          const res = await client.query(
+            `UPDATE users
            SET ${query.join(',')}
            WHERE id = ${id}
            RETURNING *`,
-          values,
-        );
+            values,
+          );
 
-        if (!res.rows.length) {
-          throw new Error('ERROR:User not found');
+          if (!res.rows.length) {
+            throw new Error('ERROR:User not found');
+          }
+
+          console.log(`DEBUG:  User updated: ${JSON.stringify(res.rows[0])}`);
+          return res.rows[0];
         }
-
-        console.log(`DEBUG:  User updated: ${JSON.stringify(res.rows[0])}`);
-        return res.rows[0];
       } catch (err) {
         if ( env === Constants.env.dev ) {
           console.error(err.message || err);

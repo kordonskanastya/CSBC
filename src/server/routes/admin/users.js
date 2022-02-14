@@ -42,13 +42,13 @@ const users = express.Router();
  *         patronymic: Georgovich
  *         email: pupvasya@gmail.com
  *         password: VasyaKrutoy
- *         role: users
+ *         role: admin
  */
 
 
 /**
  * @swagger
- * /users/registration:
+ * /admin/users/registration:
  *   post:
  *     summary: Create user
  *     tags: [Users]
@@ -84,7 +84,7 @@ users.post(
 
 /**
  * @swagger
- * /users/:
+ * /admin/users/:
  *   get:
  *     summary: Get all users
  *     tags: [Users]
@@ -104,7 +104,7 @@ users.get('/', controllers.getAllUsers);
 
 /**
  * @swagger
- * /users/{id}:
+ * /admin/users/{id}:
  *  get:
  *    summary: Find User by  id
  *    tags: [Users]
@@ -140,7 +140,7 @@ users.get(
 });
 /**
  * @swagger
- * /update/{id}:
+ * /admin/users/update/{id}:
  *  put:
  *    summary: Update User by  id
  *    tags: [Users]
@@ -185,7 +185,7 @@ users.put(
 
 /**
  * @swagger
- * /delete/{id}:
+ * /admin/users/delete/{id}:
  *  delete:
  *    summary: Delete User by  id
  *    tags: [Users]
