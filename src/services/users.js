@@ -6,7 +6,7 @@ async function getAllUsers() {
   try {
     const dbData = await db.getAllUsers();
     return successMessage(dbData);
-  }catch (err){
+  } catch (err) {
     return  { code: statusCode.serverError, message: err.message };
   }
 }
@@ -16,7 +16,7 @@ async function createUser(req) {
     req.password = hashPassword(req.password);
     const newUser = await db.createUser(req);
     return successMessage(newUser);
-  }catch (err){
+  } catch (err) {
     return { code: statusCode.serverError, message: err.message };
   }
 }
@@ -25,8 +25,7 @@ async function updateUser(req) {
   try {
     const updatedUser = await db.updateUser({ id: req.params.id, ...req.body });
     return successMessage(updatedUser);
-  }
-  catch (err){
+  } catch (err) {
     return { code: statusCode.serverError, message: err.message };
   }
 }
@@ -35,7 +34,7 @@ async function deleteUser(req) {
   try {
     const deletedUser = await db.deleteUser(req.params.id);
     return successMessage(deletedUser);
-  }catch (err){
+  } catch (err) {
     return { code: statusCode.serverError, message: err.message };
   }
 }
@@ -44,7 +43,7 @@ async function getUserByID(req) {
   try {
   const user = await db.getUserByID(req);
   return successMessage(user);
-  }catch (err){
+  } catch (err) {
     return { code: statusCode.serverError, message: err.message };
   }
 }

@@ -64,7 +64,6 @@ const login = express.Router();
  *         email: pupvasya@gmail.com
  *         password: VasyaKrutoy
  */
-
 /**
  * @swagger
  * components:
@@ -89,7 +88,6 @@ const login = express.Router();
  *         refreshToken: fdhhfdhfdfd
  *         message: You are logged in
  */
-
 /**
  * @swagger
  * components:
@@ -114,7 +112,6 @@ const login = express.Router();
  *         refreshToken: fdhhfdhfdfd
  *         message: You are logged in
  */
-
 /**
  * @swagger
  * /auth/login:
@@ -150,7 +147,26 @@ login.post(
       next(err);
     }
 });
-
+/**
+ * @swagger
+ * /auth/login/forgotten:
+ *   post:
+ *     summary: If the user has forgotten the password, change the password and send an email
+ *     tags: [Authentication]
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *           schema:
+ *            $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *        200:
+ *          description: Password Successfully changed
+ *        400:
+ *          description: User not found
+ *        500:
+ *          description: Some error happened
+ */
 login.post(
   '/login/forgotten',
   joiValidator(schemas.schemaLoginForgotten, 'body'),

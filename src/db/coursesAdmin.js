@@ -19,10 +19,6 @@ module.exports = (config) => {
     },
     getCourseByID: async ({ id }) => {
       try {
-        if (!id) {
-          throw new Error('ERROR: No course id defined');
-        }
-
         // eslint-disable-next-line max-len
         const validId = await client.query('SELECT id from courses where id=$1', [
           id,
@@ -31,7 +27,7 @@ module.exports = (config) => {
           throw  new Error('ERROR:User course find');
         }
 
-        const res = await client.query('SELECT * From users WHERE id=$1 ', [
+        const res = await client.query('SELECT * From courses WHERE id=$1 ', [
           id,
         ]);
 
@@ -50,6 +46,11 @@ module.exports = (config) => {
                          name
                        }) => {
       try {
+        const lecturerRole = await client.query(
+          'SELECT FROM users WHERE id=$1 AND role=$2', [lecturerId, 'teacher']);
+        if (!lecturerRole.rows[0]) {
+          throw new Error('this user is not a teacher!');
+        }
         const res = await client.query(
           `INSERT INTO courses(lecturer_id,
             credits, name)
