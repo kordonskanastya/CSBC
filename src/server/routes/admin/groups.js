@@ -5,9 +5,6 @@ const schemas = require('../../../validators/schemas');
 
 const groups = express.Router();
 
-
-
-
 /**
  * @swagger
  * /admin/groups:

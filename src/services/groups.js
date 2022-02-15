@@ -12,8 +12,8 @@ async function createGroup(body){
 }
 async function getAllGroups(body){
   try {
-    const newGroup = await db.getAllGroups(body);
-    return successMessage(newGroup);
+    const allGroups = await db.getAllGroups(body);
+    return successMessage(allGroups);
   }catch (err){
     return { code: statusCode.serverError, message: err.message };
   }

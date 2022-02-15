@@ -25,6 +25,7 @@ async function checkPassword(body) {
     if (hashUserPassword !== userFromDB.password) {
       throw new Error('Password is not correct');
     }
+    return userFromDB;
   }catch (err){
     return { code: statusCode.serverError, message: err.message };
   }
@@ -33,8 +34,8 @@ async function checkPassword(body) {
 async function authenticatingUser (body) {
   try {
     const { email } = body;
-    await checkPassword(body);
-    const accessToken = generateAccessToken(email);
+    const { id: userId, role: userRole } = await checkPassword(body);
+    const accessToken = generateAccessToken(email, userId, userRole);
     const refreshToken = generateRefreshToken(email);
     await db.putRefreshToken(email, refreshToken);
     if (env === constants.env.dev) {
@@ -43,7 +44,7 @@ async function authenticatingUser (body) {
     }
     return accessToken;
   }
-  catch (err){
+  catch (err) {
     return { code: statusCode.serverError, message: err.message };
   }
 }
