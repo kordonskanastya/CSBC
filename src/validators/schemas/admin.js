@@ -42,6 +42,10 @@ const groupSchema = Joi.object({
     Joi.date().greater('2000-01-01').less('3001-01-01').iso().required(),
   fkSpecialityId: Joi.number().min(1).max(15).required(),
 });
+const specialitySchema = Joi.object({
+  name: Joi.string().min(3).max(128).required(),
+  code: Joi.string().min(3).max(3).required()
+});
 
 const studentSchema = Joi.object({
   edeboId: Joi.number().min(1000000).max(9999999).positive().required(),
@@ -54,5 +58,9 @@ module.exports = {
   IdSchema,
   coursesSchema,
   groupSchema,
+<<<<<<< HEAD
   studentSchema
+=======
+  specialitySchema
+>>>>>>> 35288fe (added specialities crud)
 };
