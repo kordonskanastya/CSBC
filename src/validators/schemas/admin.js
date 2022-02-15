@@ -22,12 +22,18 @@ const userSchema = Joi.object({
     .required(),
 });
 
-const userIdSchema = Joi.object({
+const IdSchema = Joi.object({
   id: Joi.number().min(1).positive(),
 });
 
+const coursesSchema=Joi.object({
+  lecturerId:Joi.number().min(1).positive().required(),
+  credits:Joi.number().min(1).max(60).required(),
+  name:Joi.string().min(3).max(128).required()
+});
 
 module.exports = {
   userSchema,
-  userIdSchema
+  IdSchema,
+  coursesSchema
 };

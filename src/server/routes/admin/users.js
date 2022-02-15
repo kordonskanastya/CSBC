@@ -130,7 +130,7 @@ users.get('/', controllers.getAllUsers);
  */
 users.get(
   '/:id',
-  joiValidator(schemas.userIdSchema, 'params'),
+  joiValidator(schemas.IdSchema, 'params'),
   async (req, res, next) => {
     try {
       await controllers.getUserByID(req, res);
@@ -173,7 +173,7 @@ users.get(
  */
 users.put(
   '/update/:id',
-  joiValidator(schemas.userIdSchema, 'params'),
+  joiValidator(schemas.IdSchema, 'params'),
   joiValidator(schemas.userSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -209,7 +209,7 @@ users.put(
 
 users.delete(
   '/delete/:id',
-  joiValidator(schemas.userIdSchema, 'params'),
+  joiValidator(schemas.IdSchema, 'params'),
   async (req, res, next) => {
     try {
       await controllers.deleteUser(req, res);

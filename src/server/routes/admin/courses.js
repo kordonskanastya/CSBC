@@ -1,5 +1,7 @@
 const express = require('express');
 const controllers = require('../../controllers');
+const joiValidator = require('../../../validators/expressValidator');
+const schemas = require('../../../validators/schemas');
 
 const courses = express.Router();
 
@@ -103,7 +105,9 @@ courses.get('/',controllers.getAllCourses);
  *       500:
  *         description: Some server error
  */
-courses.post('/create',controllers.createCourse);
+courses.post('/create',
+  joiValidator(schemas.coursesSchema,'body'),
+  controllers.createCourse);
 /**
  * @swagger
  * /admin/courses/{id}:
@@ -130,7 +134,9 @@ courses.post('/create',controllers.createCourse);
  *      500:
  *        description: Some error happened
  */
-courses.get('/:id',controllers.getCourseByID);
+courses.get('/:id',
+  joiValidator(schemas.IdSchema,'params'),
+  controllers.getCourseByID);
 
 
 module.exports=courses;
