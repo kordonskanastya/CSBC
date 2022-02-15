@@ -19,17 +19,12 @@ module.exports = (config) => {
     },
     getUserByID: async ({ id }) => {
       try {
-        if (!id) {
-          throw new Error('ERROR: No user id defined');
-        }
-
         const validId = await client.query('SELECT id from users where id=$1', [
           id,
         ]);
         if (validId.rows.length === 0) {
           throw new Error('ERROR:User not find');
         }
-
         const res = await client.query('SELECT * From users WHERE id=$1 ', [
           id,
         ]);
@@ -78,9 +73,6 @@ module.exports = (config) => {
 
     deleteUser: async (id) => {
       try {
-        if (!id) {
-          throw new Error('ERROR: No user id defined');
-        }
         const idUser = await client.query('SELECT id from users where id=$1', [
           id,
         ]);
@@ -100,9 +92,6 @@ module.exports = (config) => {
     },
     updateUser: async ({ id, ...user }) => {
       try {
-        if (!id) {
-          throw new Error('ERROR: No product id defined');
-        }
         const emailUser=await client.query(
           'Select email from users where email=$1 ',[user.email]);
         if(emailUser.rows.length!==0){

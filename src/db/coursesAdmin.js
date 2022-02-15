@@ -19,10 +19,6 @@ module.exports = (config) => {
     },
     getCourseByID: async ({ id }) => {
       try {
-        if (!id) {
-          throw new Error('ERROR: No course id defined');
-        }
-
         // eslint-disable-next-line max-len
         const validId = await client.query('SELECT id from courses where id=$1', [
           id,
