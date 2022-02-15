@@ -5,9 +5,7 @@ const userAdmin = require('./userAdmin')(config.db);
 const coursesAdmin = require('./coursesAdmin')(config.db);
 const groupsAdmin = require('./groupsAdmin')(config.db);
 const studentAdmin = require('./studentAdmin')(config.db);
-
 const specialitiesAdmin = require('./specialitiesAdmin')(config.db);
-const studentAdmin = require('./studentAdmin')(config.db);
 
 
 module.exports = {
@@ -18,5 +16,4 @@ module.exports = {
   ...groupsAdmin,
   ...studentAdmin,
   ...specialitiesAdmin,
-  ...studentAdmin,
 };
