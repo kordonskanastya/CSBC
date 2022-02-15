@@ -3,82 +3,82 @@ const controllers = require('../../controllers');
 const joiValidator = require('../../../validators/expressValidator');
 const schemas = require('../../../validators/schemas');
 
-const groups = express.Router();
+const students = express.Router();
 
 /**
  * @swagger
- * /admin/groups:
+ * /admin/students:
  *   get:
- *     summary: Get all groups
- *     tags: [Groups]
+ *     summary: Get all students
+ *     tags: [Students]
  *     responses:
  *       200:
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/GroupsResponseBody'
+ *               $ref: '#/components/schemas/StudentsResponseBody'
  *       401:
  *         description: Unauthorized
  *       500:
  *         description: Some server error
  */
- groups.get('/',controllers.getAllGroups);
+ students.get('/',controllers.getAllStudents);
 /**
  * @swagger
- * /admin/groups/create:
+ * /admin/students/create:
  *   post:
- *     summary: Create groups
- *     tags: [Groups]
+ *     summary: Create student
+ *     tags: [Students]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/GroupsRequestBody'
+ *             $ref: '#/components/schemas/StudentsRequestBody'
  *     responses:
  *       200:
- *         description: Group was successfully created
+ *         description: Student was successfully created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/GroupsResponseBody'
+ *               $ref: '#/components/schemas/StudentsResponseBody'
  *       401:
  *          description: Unauthorized
  *       500:
  *         description: Some server error
  */
- groups.post('/create',
-  joiValidator(schemas.groupSchema,'body'),
-  controllers.createGroup);
+ students.post('/create',
+  joiValidator(schemas.studentSchema,'body'),
+  controllers.createStudent);
 /**
  * @swagger
- * /admin/groups/{id}:
+ * /admin/students/{id}:
  *  get:
- *    summary: Find Group by  id
- *    tags: [Groups]
+ *    summary: Find Students by id
+ *    tags: [Students]
  *    parameters:
  *      - in: path
  *        name: id
  *        schema:
  *          type: string
  *        required: true
- *        description: Group id
+ *        description: Student id
  *    responses:
  *      200:
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/GroupsResponseBody'
+ *              $ref: '#/components/schemas/StudentsResponseBody'
  *      401:
  *          description: Unauthorized
  *      404:
- *        description: Group not found
+ *        description: Student not found
  *      500:
  *        description: Some error happened
  */
- groups.get('/:id',
+ students.get('/:id',
   joiValidator(schemas.IdSchema,'params'),
-  controllers.getGroupByID);
+  controllers.getStudentByID);
 
 
-module.exports = groups;
+module.exports = students;

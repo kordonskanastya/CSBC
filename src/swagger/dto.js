@@ -1,3 +1,60 @@
+// -----------Students-----------
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     StudentsRequestBody:
+ *       type: object
+ *       required:
+ *         - edeboId
+ *         - groupId
+ *         - userId
+ *       properties:
+ *           edeboId:
+ *           - type: integer
+ *           - description: Unique student`s identifier
+ *           groupId:
+ *           - type: integer
+ *           - description: id of student group
+ *           userId:
+ *           - type: integer
+ *           - description:  id of user connected to student
+ *       example:
+ *         edeboId: 1234567
+ *         groupId: 4
+ *         userId: 4
+ */
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     StudentsResponseBody:
+ *       type: object
+ *       required:
+ *         - id
+ *         - edeboId
+ *         - groupId
+ *         - userId
+ *       properties:
+ *           id:
+ *           -type:integer
+ *           -description: Unique student identifier
+ *           edeboId:
+ *           - type: integer
+ *           - description: Unique student`s identifier
+ *           groupId:
+ *           - type: integer
+ *           - description: id of student group
+ *           userId:
+ *           - type: integer
+ *           - description:  id of user connected to student
+ *       example:
+ *         id: 1
+ *         edeboId: 1234567
+ *         groupId: 4
+ *         userId: 4
+ */
+
 // -----------Courses-----------
 /**
  * @swagger
