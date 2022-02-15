@@ -6,11 +6,17 @@ const coursesAdmin = require('./coursesAdmin')(config.db);
 const groupsAdmin = require('./groupsAdmin')(config.db);
 const studentAdmin = require('./studentAdmin')(config.db);
 
+const specialitiesAdmin = require('./specialitiesAdmin')(config.db);
+const studentAdmin = require('./studentAdmin')(config.db);
+
+
 module.exports = {
   ...common,
   ...auth,
   ...userAdmin,
   ...coursesAdmin,
   ...groupsAdmin,
-  ...studentAdmin
+  ...studentAdmin,
+  ...specialitiesAdmin,
+  ...studentAdmin,
 };
