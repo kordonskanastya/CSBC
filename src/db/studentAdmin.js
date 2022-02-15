@@ -75,5 +75,40 @@ module.exports = (config) => {
         throw err;
       }
     },
+
+    updateStudent: async ({ id, ...student }) => {
+      try {
+        const studentRoleCheck = await client.query(
+          'SELECT FROM users WHERE id=$1 AND role=$2',
+          [student.userId, roles[1]]);
+        if (!studentRoleCheck.rows[0]) {
+          throw new Error(`this user is not a ${roles[1]}!
+            or this user does not exist`);
+        }
+        const groupCheck = await client.query(
+          'SELECT FROM groups WHERE id=$1',
+          [student.groupId]);
+        if (!groupCheck.rows[0]) {
+          throw new Error('No such group');
+        }
+        const res = await client.query(
+          `UPDATE students SET edebo_id=$1, fk_group_id=$2, fk_user_id=$3
+          WHERE id=$4 RETURNING *`,
+          [student.edeboId, student.groupId, student.userId, id]);
+
+        if (!res.rows.length) {
+          throw new Error('ERROR: Student not found');
+        }
+        if ( env === Constants.env.dev ) {
+          console.log(`DEBUG:  User updated: ${JSON.stringify(res.rows[0])}`);
+        }
+        return res.rows[0];
+      } catch (err) {
+        if ( env === Constants.env.dev ) {
+          console.error(err.message || err);
+        }
+        throw err;
+      }
+    },
   };
 };

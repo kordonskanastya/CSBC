@@ -26,9 +26,18 @@ async function getStudentByID(req) {
     return { code: statusCode.serverError, message: err.message };
   }
 }
+async function updateStudent(req){
+  try {
+    const students = await db.updateStudent({ id: req.params.id, ...req.body });
+    return successMessage(students);
+  }catch (err){
+    return { code: statusCode.serverError, message: err.message };
+  }
+}
 
 module.exports = {
   createStudent,
   getAllStudents,
-  getStudentByID
+  getStudentByID,
+  updateStudent
 };

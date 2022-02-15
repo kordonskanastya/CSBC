@@ -50,6 +50,44 @@ const students = express.Router();
  students.post('/create',
   joiValidator(schemas.studentSchema,'body'),
   controllers.createStudent);
+
+/**
+ * @swagger
+ * /admin/students/update/{id}:
+ *  put:
+ *    summary: Update Student by id
+ *    tags: [Students]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: Student id
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/StudentRequestBody'
+ *    responses:
+ *      200:
+ *        description: Student was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/Student'
+ *      401:
+ *          description: Unauthorized
+ *      400:
+ *        description: Student not found
+ *      500:
+ *        description: Some error happened
+ */
+students.put('/update/:id',
+  joiValidator(schemas.IdSchema,'params'),
+  joiValidator(schemas.studentSchema,'body'),
+  controllers.updateStudent);
 /**
  * @swagger
  * /admin/students/{id}:
