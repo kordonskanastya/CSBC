@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const roles = require('../../config/roles');
 
 const userSchema = Joi.object({
   username: Joi.string()
@@ -17,7 +18,7 @@ const userSchema = Joi.object({
   email: Joi.string().email().max(128).lowercase().required(),
   password: Joi.string().min(8).max(32).required().strict(),
   role: Joi.string()
-    .valid('student', 'curator', 'teacher', 'admin')
+    .valid(roles[1], roles[2], roles[3], roles[4])
     .insensitive()
     .required(),
 });
@@ -26,14 +27,25 @@ const IdSchema = Joi.object({
   id: Joi.number().min(1).positive(),
 });
 
-const coursesSchema=Joi.object({
+const coursesSchema = Joi.object({
   lecturerId:Joi.number().min(1).positive().required(),
   credits:Joi.number().min(1).max(60).required(),
   name:Joi.string().min(3).max(128).required()
 });
 
+const groupSchema = Joi.object({
+  name: Joi.string().min(3).max(128).required(),
+  curatorId: Joi.number().min(1).positive().required(),
+  entryYear:
+    Joi.date().greater('2000-01-01').less('3001-01-01').iso().required(),
+  graduationYear:
+    Joi.date().greater('2000-01-01').less('3001-01-01').iso().required(),
+  fkSpecialityId: Joi.number().min(1).max(15).required(),
+});
+
 module.exports = {
   userSchema,
   IdSchema,
-  coursesSchema
+  coursesSchema,
+  groupSchema
 };

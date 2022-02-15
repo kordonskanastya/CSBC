@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const express = require('express');
 const controllers = require('../../controllers');
 const joiValidator = require('../../../validators/expressValidator');

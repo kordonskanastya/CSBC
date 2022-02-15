@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 const Constants = require('../utils/constants');
 const { env } = require('../config');
+const roles = require('../config/roles');
 
 module.exports = (config) => {
   const client = new Pool(config);
@@ -47,9 +48,9 @@ module.exports = (config) => {
                        }) => {
       try {
         const lecturerRole = await client.query(
-          'SELECT FROM users WHERE id=$1 AND role=$2', [lecturerId, 'teacher']);
+          'SELECT FROM users WHERE id=$1 AND role=$2', [lecturerId, roles[3]]);
         if (!lecturerRole.rows[0]) {
-          throw new Error('this user is not a teacher!');
+          throw new Error(`this user is not a ${roles[2]}!`);
         }
         const res = await client.query(
           `INSERT INTO courses(lecturer_id,

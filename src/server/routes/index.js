@@ -26,6 +26,7 @@ app.use(authenticateToken);
 
 app.use('/admin/users', admin.users);
 app.use('/admin/courses',admin.subjects);
+app.use('/admin/groups',admin.groups);
 app.get('/ping', (req, res) => {
   res.send('pong');
 });
