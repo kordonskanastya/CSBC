@@ -9,72 +9,89 @@ const groups = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     CoursesRequestBody:
+ *     GroupsRequestBody:
  *       type: object
  *       required:
- *         - lecturerId
- *         - credits
  *         - name
+ *         - curatorId
+ *         - entryYear
+ *         - graduationYear
+ *         - fkSpecialityId
  *       properties:
- *           lecturerId:
- *           - type: integer
- *           - description: Unique user`s identifier
- *           credits:
- *           - type: integer
- *           - description: Academic system of credits that a student receives for a course
  *           name:
  *           - type: string
- *           - description:  Course name
+ *           - description:  Group name
+ *           curatorId:
+ *           - type: integer
+ *           - description: Unique user`s identifier
+ *           entryYear:
+ *           - type: data
+ *           - description: data of entry to university
+ *           graduationYear:
+ *           - type: data
+ *           - description: data of graduation from university
+ *           fkSpecialityId:
+ *           - type: integer
+ *           - description: Unique specialities identifier
  *       example:
- *         lecturerId: 1
- *         credits: 10
- *         name: OOP
+ *         name: 1п-19
+ *         curatorId: 2
+ *         entryYear: 2020-07-10
+ *         graduationYear: 2024-07-10
+ *         fkSpecialityId: 10
  */
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     CoursesResponseBody:
+ *     GroupsResponseBody:
  *       type: object
  *       required:
  *         - id
- *         - lecturerId
- *         - credits
  *         - name
+ *         - curatorId
+ *         - entryYear
+ *         - graduationYear
+ *         - fkSpecialityId
  *       properties:
- *           id:
- *           -type:integer
- *           -description: Unique course identifier
- *           lecturerId:
- *           - type: integer
- *           - description: Unique user`s identifier
- *           credits:
- *           - type: integer
- *           - description: Academic system of credits that a student receives for a course
  *           name:
  *           - type: string
- *           - description:  Course name
+ *           - description:  Group name
+ *           curatorId:
+ *           - type: integer
+ *           - description: Unique user`s identifier
+ *           entryYear:
+ *           - type: data
+ *           - description: data of entry to university
+ *           graduationYear:
+ *           - type: data
+ *           - description: data of graduation from university
+ *           fkSpecialityId:
+ *           - type: integer
+ *           - description: Unique specialities identifier
  *       example:
  *         id: 1
- *         lecturerId: 1
- *         credits: 10
- *         name: OOP
+ *         name: 1п-19
+ *         curatorId: 2
+ *         entryYear: 2020-07-10
+ *         graduationYear: 2024-07-10
+ *         fkSpecialityId: 10
  */
 
 
 /**
  * @swagger
- * /admin/courses:
+ * /admin/groups:
  *   get:
- *     summary: Get all courses
- *     tags: [Courses]
+ *     summary: Get all groups
+ *     tags: [Groups]
  *     responses:
  *       200:
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/CoursesResponseBody'
+ *               $ref: '#/components/schemas/GroupsResponseBody'
  *       401:
  *         description: Unauthorized
  *       500:
@@ -83,23 +100,23 @@ const groups = express.Router();
  groups.get('/',controllers.getAllGroups);
 /**
  * @swagger
- * /admin/courses/create:
+ * /admin/groups/create:
  *   post:
- *     summary: Create course
- *     tags: [Courses]
+ *     summary: Create groups
+ *     tags: [Groups]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CoursesRequestBody'
+ *             $ref: '#/components/schemas/GroupsRequestBody'
  *     responses:
  *       200:
  *         description: User was successfully created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/CoursesResponseBody'
+ *               $ref: '#/components/schemas/GroupsResponseBody'
  *       401:
  *          description: Unauthorized
  *       500:
@@ -110,23 +127,23 @@ const groups = express.Router();
   controllers.createGroup);
 /**
  * @swagger
- * /admin/courses/{id}:
+ * /admin/groups/{id}:
  *  get:
- *    summary: Find Course by  id
- *    tags: [Courses]
+ *    summary: Find Group by  id
+ *    tags: [Groups]
  *    parameters:
  *      - in: path
  *        name: id
  *        schema:
  *          type: string
  *        required: true
- *        description: Course id
+ *        description: Group id
  *    responses:
  *      200:
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/CoursesResponseBody'
+ *              $ref: '#/components/schemas/GroupsResponseBody'
  *      401:
  *          description: Unauthorized
  *      404:
