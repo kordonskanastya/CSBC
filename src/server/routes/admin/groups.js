@@ -5,79 +5,7 @@ const schemas = require('../../../validators/schemas');
 
 const groups = express.Router();
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     GroupsRequestBody:
- *       type: object
- *       required:
- *         - name
- *         - curatorId
- *         - entryYear
- *         - graduationYear
- *         - fkSpecialityId
- *       properties:
- *           name:
- *           - type: string
- *           - description:  Group name
- *           curatorId:
- *           - type: integer
- *           - description: Unique user`s identifier
- *           entryYear:
- *           - type: data
- *           - description: data of entry to university
- *           graduationYear:
- *           - type: data
- *           - description: data of graduation from university
- *           fkSpecialityId:
- *           - type: integer
- *           - description: Unique specialities identifier
- *       example:
- *         name: 1п-19
- *         curatorId: 2
- *         entryYear: 2020-07-10
- *         graduationYear: 2024-07-10
- *         fkSpecialityId: 10
- */
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     GroupsResponseBody:
- *       type: object
- *       required:
- *         - id
- *         - name
- *         - curatorId
- *         - entryYear
- *         - graduationYear
- *         - fkSpecialityId
- *       properties:
- *           name:
- *           - type: string
- *           - description:  Group name
- *           curatorId:
- *           - type: integer
- *           - description: Unique user`s identifier
- *           entryYear:
- *           - type: data
- *           - description: data of entry to university
- *           graduationYear:
- *           - type: data
- *           - description: data of graduation from university
- *           fkSpecialityId:
- *           - type: integer
- *           - description: Unique specialities identifier
- *       example:
- *         id: 1
- *         name: 1п-19
- *         curatorId: 2
- *         entryYear: 2020-07-10
- *         graduationYear: 2024-07-10
- *         fkSpecialityId: 10
- */
 
 
 /**

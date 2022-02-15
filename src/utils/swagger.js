@@ -29,7 +29,9 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./src/server/routes/*.js','./src/server/routes/admin/*.js'],
+  apis: ['./src/server/routes/*.js',
+    './src/server/routes/admin/*.js',
+    './src/swagger/*.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
