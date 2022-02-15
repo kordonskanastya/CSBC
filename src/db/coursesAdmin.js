@@ -50,6 +50,11 @@ module.exports = (config) => {
                          name
                        }) => {
       try {
+        const lecturerRole = await client.query(
+          'SELECT FROM users WHERE id=$1 AND role=$2', [lecturerId, 'teacher']);
+        if (!lecturerRole.rows[0]) {
+          throw new Error('this user is not a teacher!');
+        }
         const res = await client.query(
           `INSERT INTO courses(lecturer_id,
             credits, name)
