@@ -55,7 +55,7 @@ const students = express.Router();
  * @swagger
  * /admin/students/update/{id}:
  *  put:
- *    summary: Update Student by id
+ *    summary: Update Students by id
  *    tags: [Students]
  *    parameters:
  *      - in: path
@@ -63,20 +63,20 @@ const students = express.Router();
  *        schema:
  *          type: string
  *        required: true
- *        description: Student id
+ *        description: Students id
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/StudentRequestBody'
+ *            $ref: '#/components/schemas/StudentsRequestBody'
  *    responses:
  *      200:
  *        description: Student was updated
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/StudentResponseBody'
+ *              $ref: '#/components/schemas/StudentsResponseBody'
  *      401:
  *          description: Unauthorized
  *      400:
