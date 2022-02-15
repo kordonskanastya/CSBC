@@ -112,7 +112,7 @@ const groups = express.Router();
  *             $ref: '#/components/schemas/GroupsRequestBody'
  *     responses:
  *       200:
- *         description: User was successfully created
+ *         description: Group was successfully created
  *         content:
  *           application/json:
  *             schema:
@@ -147,7 +147,7 @@ const groups = express.Router();
  *      401:
  *          description: Unauthorized
  *      404:
- *        description: User  not found
+ *        description: Group not found
  *      500:
  *        description: Some error happened
  */
