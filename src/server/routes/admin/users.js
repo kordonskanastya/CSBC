@@ -4,47 +4,6 @@ const joiValidator = require('../../../validators/expressValidator');
 const schemas = require('../../../validators/schemas');
 
 const users = express.Router();
-/**
- * @swagger
- * components:
- *   schemas:
- *     AdminRequestBody:
- *       type: object
- *       required:
- *         - username
- *         - surname
- *         - patronymic
- *         - email
- *         - password
- *         - role
- *       properties:
- *         username:
- *           type: string
- *           description:  User Name
- *         surname:
- *           type: string
- *           description:  User surname
- *         patronymic:
- *           type: string
- *           description:  User patronymic
- *         email:
- *           type: string
- *           description:  User email
- *         password:
- *           type: string
- *           description: User password
- *         role:
- *         type: string
- *         description: User role
- *       example:
- *         username: Vasya
- *         surname: Pup
- *         patronymic: Georgovich
- *         email: pupvasya@gmail.com
- *         password: VasyaKrutoy
- *         role: admin
- */
-
 
 /**
  * @swagger
@@ -57,14 +16,14 @@ const users = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/AdminRequestBody'
+ *             $ref: '#/components/schemas/UserRequestBody'
  *     responses:
  *       200:
  *         description: User was successfully created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/AdminRequestBody'
+ *               $ref: '#/components/schemas/UserRequestBody'
  *       401:
  *          description: Unauthorized
  *       500:
@@ -156,7 +115,7 @@ users.get(
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/AdminRequestBody'
+ *            $ref: '#/components/schemas/UserRequestBody'
  *    responses:
  *      200:
  *        description: User was updated

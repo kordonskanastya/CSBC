@@ -8,64 +8,6 @@ const courses = express.Router();
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     CoursesRequestBody:
- *       type: object
- *       required:
- *         - lecturerId
- *         - credits
- *         - name
- *       properties:
- *           lecturerId:
- *           - type: integer
- *           - description: Unique user`s identifier
- *           credits:
- *           - type: integer
- *           - description: Academic system of credits that a student receives for a course
- *           name:
- *           - type: string
- *           - description:  Course name
- *       example:
- *         lecturerId: 1
- *         credits: 10
- *         name: OOP
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     CoursesResponseBody:
- *       type: object
- *       required:
- *         - id
- *         - lecturerId
- *         - credits
- *         - name
- *       properties:
- *           id:
- *           -type:integer
- *           -description: Unique course identifier
- *           lecturerId:
- *           - type: integer
- *           - description: Unique user`s identifier
- *           credits:
- *           - type: integer
- *           - description: Academic system of credits that a student receives for a course
- *           name:
- *           - type: string
- *           - description:  Course name
- *       example:
- *         id: 1
- *         lecturerId: 1
- *         credits: 10
- *         name: OOP
- */
-
-
-/**
- * @swagger
  * /admin/courses:
  *   get:
  *     summary: Get all courses
