@@ -127,6 +127,49 @@
  *         graduationYear: 2024-07-10
  *         fkSpecialityId: 10
  */
+// -------------Specialities-----------
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SpecialitiesRequestBody:
+ *       type: object
+ *       required:
+ *         - name
+ *         - code
+ *       properties:
+ *           name:
+ *           - type: string
+ *           - description:  Speciality name
+ *           code:
+ *           - type: string
+ *           - description: Speciality code
+ *       example:
+ *         name: Інженерія програмного забезпечення
+ *         code: 121
+ */
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SpecialitiesResponseBody:
+ *       type: object
+ *       required:
+ *         - id
+ *         - name
+ *         - code
+ *       properties:
+ *           name:
+ *           - type: string
+ *           - description:  Group name
+ *           code:
+ *           - type: string
+ *           - description: Unique user`s identifier
+ *       example:
+ *         id: 1
+ *         name: Інженерія програмного забезпечення
+ *         code: 121
+ */
 // ------------Users-------------
 /**
  * @swagger
