@@ -43,9 +43,16 @@ const groupSchema = Joi.object({
   fkSpecialityId: Joi.number().min(1).max(15).required(),
 });
 
+const studentSchema = Joi.object({
+  edeboId: Joi.number().min(1000000).max(9999999).positive().required(),
+  groupId: Joi.number().min(1).positive().required(),
+  userId: Joi.number().min(1).positive().required(),
+});
+
 module.exports = {
   userSchema,
   IdSchema,
   coursesSchema,
-  groupSchema
+  groupSchema,
+  studentSchema
 };
