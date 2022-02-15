@@ -12,5 +12,6 @@ module.exports={
   ...auth,
   ...groups,
   ...students,
-  ...specialities
+  ...specialities,
+  ...students,
 };

@@ -2,20 +2,16 @@ const users = require('./users');
 const courses = require('./courses');
 const auth = require('./auth');
 const groups = require('./groups');
-<<<<<<< HEAD
 const students = require('./students');
-=======
 const specialities=require('./specialites');
->>>>>>> 35288fe (added specialities crud)
+const students = require('./students');
 
 module.exports = {
   ...users,
   ...courses,
   ...auth,
   ...groups,
-<<<<<<< HEAD
-  ...students
-=======
-  ...specialities
->>>>>>> 35288fe (added specialities crud)
+  ...students,
+  ...specialities,
+  ...students,
 };

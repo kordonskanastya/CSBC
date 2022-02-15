@@ -27,11 +27,9 @@ app.use(authenticateToken);
 app.use('/admin/users', admin.users);
 app.use('/admin/courses',admin.subjects);
 app.use('/admin/groups',admin.groups);
-<<<<<<< HEAD
 app.use('/admin/students',admin.students);
-=======
 app.use('/admin/specialities',admin.specialities);
->>>>>>> 35288fe (added specialities crud)
+app.use('/admin/students',admin.students);
 app.get('/ping', (req, res) => {
   res.send('pong');
 });
