@@ -76,7 +76,7 @@ const students = express.Router();
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Student'
+ *              $ref: '#/components/schemas/StudentResponseBody'
  *      401:
  *          description: Unauthorized
  *      400:
