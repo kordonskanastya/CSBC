@@ -2,33 +2,33 @@ const { successMessage } = require('../utils');
 const db = require('../db');
 const statusCode = require('../statusCode');
 
-async function createCourse(body){
+async function createGroup(body){
   try {
-    const courses = await db.createCourse(body);
-    return successMessage(courses);
+    const groups = await db.createGroup(body);
+    return successMessage(groups);
   }catch (err){
     return { code: statusCode.serverError, message: err.message };
   }
 }
-async function getAllCourses(body){
+async function getAllGroups(body){
   try {
-    const newCourse = await db.getAllCourses(body);
-    return successMessage(newCourse);
+    const newGroup = await db.getAllGroups(body);
+    return successMessage(newGroup);
   }catch (err){
     return { code: statusCode.serverError, message: err.message };
   }
 }
-async function getCourseByID(req) {
+async function getGroupByID(req) {
   try {
-    const course = await db.getCourseByID(req);
-    return successMessage(course);
+    const group = await db.getGroupByID(req);
+    return successMessage(group);
   } catch (err){
     return { code: statusCode.serverError, message: err.message };
   }
 }
 
 module.exports = {
-  createCourse,
-  getAllCourses,
-  getCourseByID
+  createGroup,
+  getAllGroups,
+  getGroupByID
 };
