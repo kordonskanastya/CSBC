@@ -57,6 +57,7 @@ module.exports = (config) => {
         if ( env === Constants.env.dev ) {
           console.error(err.message || err);
         }
+        throw err;
       }
     },
   };

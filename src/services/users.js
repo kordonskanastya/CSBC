@@ -1,13 +1,12 @@
 const db = require('../db');
 const { successMessage, hashPassword } = require('../utils');
-const statusCode = require('../statusCode');
 
 async function getAllUsers() {
   try {
     const dbData = await db.getAllUsers();
     return successMessage(dbData);
   } catch (err) {
-    return  { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 
@@ -17,7 +16,7 @@ async function createUser(req) {
     const newUser = await db.createUser(req);
     return successMessage(newUser);
   } catch (err) {
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 
@@ -26,7 +25,7 @@ async function updateUser(req) {
     const updatedUser = await db.updateUser({ id: req.params.id, ...req.body });
     return successMessage(updatedUser);
   } catch (err) {
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 
@@ -35,7 +34,7 @@ async function deleteUser(req) {
     const deletedUser = await db.deleteUser(req.params.id);
     return successMessage(deletedUser);
   } catch (err) {
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 
@@ -44,7 +43,7 @@ async function getUserByID(req) {
   const user = await db.getUserByID(req);
   return successMessage(user);
   } catch (err) {
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 

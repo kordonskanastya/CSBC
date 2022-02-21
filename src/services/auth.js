@@ -1,7 +1,6 @@
 const { env } = require('../config');
 const constants = require('../utils/constants');
 const db = require('../db');
-const statusCode = require('../statusCode');
 const {
   hashPassword,
   generatePassword,
@@ -26,8 +25,8 @@ async function checkPassword(body) {
       throw new Error('Password is not correct');
     }
     return userFromDB;
-  }catch (err){
-    return { code: statusCode.serverError, message: err.message };
+  } catch (err){
+    throw new Error (err.message || err);
   }
 }
 
@@ -45,7 +44,7 @@ async function authenticatingUser (body) {
     return accessToken;
   }
   catch (err) {
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 
@@ -54,7 +53,7 @@ async function loginCheck (body) {
     const accessToken = await authenticatingUser(body);
     return successMessage(accessToken);
   } catch (err) {
-    return { code: statusCode.unauthorized, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 
@@ -72,7 +71,7 @@ async function changePassword(req) {
     return successMessage(message);
   }
   catch (err){
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 

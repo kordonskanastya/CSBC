@@ -1,5 +1,5 @@
 const services = require('../../services');
-const {badRequest} = require('../../statusCode');
+const {badRequest, unauthorized} = require('../../statusCode');
 
 
 
@@ -9,7 +9,7 @@ async function loginCheck (req, res) {
     res.status(code).send(message);
   }
   catch(error) {
-    res.status(badRequest).send({error: error.message});
+    res.status(unauthorized).send({error: error.message});
   }
 }
 
