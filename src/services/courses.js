@@ -1,13 +1,12 @@
 const { successMessage } = require('../utils');
 const db = require('../db');
-const statusCode = require('../statusCode');
 
 async function createCourse(body){
   try {
     const courses = await db.createCourse(body);
     return successMessage(courses);
   }catch (err){
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 async function getAllCourses(body){
@@ -15,7 +14,7 @@ async function getAllCourses(body){
     const newCourse = await db.getAllCourses(body);
     return successMessage(newCourse);
   }catch (err){
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 async function getCourseByID(req) {
@@ -23,7 +22,7 @@ async function getCourseByID(req) {
     const course = await db.getCourseByID(req);
     return successMessage(course);
   } catch (err){
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 

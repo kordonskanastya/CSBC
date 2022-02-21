@@ -1,13 +1,12 @@
 const { successMessage } = require('../utils');
 const db = require('../db');
-const statusCode = require('../statusCode');
 
 async function createSpeciality(body){
   try {
     const groups = await db.createSpeciality(body);
     return successMessage(groups);
   }catch (err){
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 async function getAllSpecialities(body){
@@ -15,7 +14,7 @@ async function getAllSpecialities(body){
     const newGroup = await db.getAllSpecialities(body);
     return successMessage(newGroup);
   }catch (err){
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 async function getSpecialityByID(req) {
@@ -23,7 +22,7 @@ async function getSpecialityByID(req) {
     const group = await db.getSpecialityByID(req);
     return successMessage(group);
   } catch (err){
-    return { code: statusCode.serverError, message: err.message };
+    throw new Error (err.message || err);
   }
 }
 
