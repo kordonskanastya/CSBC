@@ -11,7 +11,7 @@ module.exports = (config) => {
         const data = await client.query('SELECT * FROM users');
         return data.rows;
       } catch (err) {
-        if ( env === Constants.env.dev ) {
+        if (env === Constants.env.dev) {
           console.error(err.message || err);
         }
         throw err;
@@ -28,10 +28,22 @@ module.exports = (config) => {
         const res = await client.query('SELECT * From users WHERE id=$1 ', [
           id,
         ]);
+        const timestamp = Date.now();
+        await client.query(
+          `INSERT INTO logs (operation_type, description, timeStamp, changed_by)
+         VALUES ($1, $2, $3, $4)
+         RETURNING *`,
+          [
+            'getUser',
+            res.rows[0],
+            timestamp,
+            1,
+          ],
+        );
 
         return res.rows[0];
       } catch (err) {
-        if ( env === Constants.env.dev ) {
+        if (env === Constants.env.dev) {
           console.error(err.message || err);
         }
         throw err;
@@ -44,15 +56,19 @@ module.exports = (config) => {
       patronymic,
       email,
       password,
-      role
+      role,
     }) => {
       try {
-        const emailUser=await client.query(
-          'Select email from users where email=$1 ',[email]);
-        if(emailUser.rows.length!==0){
+        const emailUser = await client.query(
+          'Select email from users where email=$1 ',
+          [email],
+        );
+        if (emailUser.rows.length !== 0) {
           // eslint-disable-next-line max-len
-          throw new Error(`ERROR:Email ${email} is defined,please try another email`);
-        }else {
+          throw new Error(
+            `ERROR:Email ${email} is defined,please try another email`,
+          );
+        } else {
           const res = await client.query(
             `INSERT INTO users(id, username, surname,
             patronymic, email, password, role)
@@ -64,7 +80,7 @@ module.exports = (config) => {
           return res.rows[0];
         }
       } catch (err) {
-        if ( env === Constants.env.dev ) {
+        if (env === Constants.env.dev) {
           console.error(err.message || err);
         }
         throw err;
@@ -84,7 +100,7 @@ module.exports = (config) => {
           return 'User deleted';
         }
       } catch (err) {
-        if ( env === Constants.env.dev ) {
+        if (env === Constants.env.dev) {
           console.error(err.message || err);
         }
         throw err;
@@ -92,12 +108,16 @@ module.exports = (config) => {
     },
     updateUser: async ({ id, ...user }) => {
       try {
-        const emailUser=await client.query(
-          'Select email from users where email=$1 ',[user.email]);
-        if(emailUser.rows.length!==0){
+        const emailUser = await client.query(
+          'Select email from users where email=$1 ',
+          [user.email],
+        );
+        if (emailUser.rows.length !== 0) {
           // eslint-disable-next-line max-len
-          throw new Error(`ERROR: Email${user.email} is defined,please try another email`);
-        }else {
+          throw new Error(
+            `ERROR: Email${user.email} is defined,please try another email`,
+          );
+        } else {
           const query = [];
           const values = [];
           // eslint-disable-next-line no-restricted-syntax
@@ -126,7 +146,7 @@ module.exports = (config) => {
           return res.rows[0];
         }
       } catch (err) {
-        if ( env === Constants.env.dev ) {
+        if (env === Constants.env.dev) {
           console.error(err.message || err);
         }
         throw err;
